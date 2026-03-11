@@ -507,8 +507,7 @@
 
     <script>
         const MAX_POINTS = 50;
-        
-        const classes = [
+              const classes = [
             {
                 name: "Berzerker", archetype: "2H Melee",
                 skills: [
@@ -539,7 +538,7 @@
                     { id: "mrk_s3", name: "Rain of Arrows", type: ".s3 Active", getDesc: (r) => `AoE volley. Radius <span class="val-hl">+${(r * 0.1).toFixed(1)}</span>. Slow <span class="val-hl">${r * 2}%</span>. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Volley Downpour", capDesc: "Leaves Poison field that reduces creature AR absorb by 10%.", rank: 0 },
                     { id: "mrk_p1", name: "Eagle Eye", type: "Passive", getDesc: (r) => `Increases bow range by <span class="val-hl">+${Math.floor(r/2)}</span> tiles.`, capName: "Point Blank", capDesc: "100% chance to knockback foes within 2 tiles (6s ICD).", rank: 0 },
                     { id: "mrk_p2", name: "Fletcher's Luck", type: "Passive", getDesc: (r) => `<span class="val-hl">${r}%</span> chance to not consume arrows/bolts.`, capName: "Recycle", capDesc: "Saving ammo grants +5% swing speed for next shot (stacks 3).", rank: 0 },
-                    { id: "mrk_p3", name: "Precise Strikes", type: "Passive", getDesc: (r) => `Grants <span class="val-hl">+${r}%</span> Critical Strike chance vs creatures.`, capName: "Executioner", capDesc: "Targets below 20% HP take +50% crit damage.", rank: 0 }
+                    { id: "mrk_p3", name: "Precise Strikes", type: "Passive", getDesc: (r) => `Grants <span class="val-hl">${r}%</span> Critical Strike chance vs creatures.`, capName: "Executioner", capDesc: "Targets below 20% HP take +50% crit damage.", rank: 0 }
                 ]
             },
             {
@@ -567,29 +566,29 @@
         ];
 
         const skillData = [
-            { name: "Tactics", gm: "10% chance on struck to refund 2s CD.", leg: "+25% dmg to next ability after refund." },
-            { name: "Anatomy", gm: "15% chance for 20% Physical dmg bypass.", leg: "Reduces foe damage by 10% for 4s." },
-            { name: "Parrying", gm: "15% chance to reflect 30% melee dmg.", leg: "Gain HP shield equal to reflected amount." },
-            { name: "Swordsmanship", gm: "10% chance for Severe Bleed DoT.", leg: "Proc effect and 50% dmg splashes." },
-            { name: "Fencing", gm: "10% chance for Armor Pierce (50% ignore).", leg: "Proc effect and 50% dmg splashes." },
-            { name: "Macing", gm: "10% chance for Crushing Blow (+15% Crit).", leg: "Crit deals +50% Physical dmg." },
-            { name: "Archery", gm: "10% chance to Pin (Root 1.5s).", leg: "Proc and 50% dmg splashes." },
-            { name: "Magery", gm: "10% chance for Arcane Echo (50% dmg).", leg: "Echoes deal 100% dmg." },
-            { name: "Eval Intelligence", gm: "15% chance for Expose Flaw (-20 Resist).", leg: "Elemental detonation on flawed foes." },
-            { name: "Meditation", gm: "Adrenaline Rush (30 Mana @ <30%).", leg: "Next ability costs 0 resources." },
-            { name: "Magic Resist", gm: "15% chance to convert 20% dmg to HP.", leg: "5% chance nullify and reflect." },
-            { name: "Tracking", gm: "+5% Speed/Dmg vs last creature type.", leg: "10% chance to Mark for Death (+15%)." },
-            { name: "Forensic Eval", gm: "Restore 10% HP/Stam on kill.", leg: "Gain +10% Speed for 5s on kill." },
-            { name: "Item ID", gm: "10% chance for Adaptive Insulation.", leg: "Absorb mitigated dmg into mana." },
-            { name: "Hiding/Stealth", gm: "10% chance to Fade nullify hit.", leg: "Fade guarantees next hit is crit." },
-            { name: "Snooping/Steal", gm: "15% chance steal 10 stamina on hit.", leg: "Pilfers directly to pack." },
-            { name: "Remove Trap", gm: "15% chance root adjacent movers.", leg: "Snare explodes for Fire Damage." },
-            { name: "Alchemy", gm: "Ex-Pots deal extra Dmg; ignore timer.", leg: "15% chance generate random pot on kill." },
-            { name: "Inscription", gm: "15% chance not consume mana.", leg: "Lethal hit absorbed once per 5 min." },
-            { name: "Poisoning", gm: "15% chance for stacking Poison DoT.", leg: "Consume poison for instant burst." },
-            { name: "Taste ID", gm: "15% chance for Auto-GHeal @ <50%.", leg: "Clears poison and restores stamina." },
-            { name: "Camping", gm: "+2 Regen aura stationary.", leg: "Aura grants 5% Damage Reduction." },
-            { name: "Begging", gm: "10% chance delay foe by 1.5s.", leg: "-25% dmg on next hit." }
+            { name: "Tactics", gm: "Refunds 2s of cooldown (up to 10% chance @ 100.0).", leg: "Next class ability deals +25% damage after refund." },
+            { name: "Anatomy", gm: "15% chance for 20% Physical dmg bypass (at 100.0).", leg: "Reduces foe damage output by 10% for 4s." },
+            { name: "Parrying", gm: "15% chance to reflect 30% melee dmg (at 100.0).", leg: "Gain HP shield equal to reflected amount." },
+            { name: "Swordsmanship", gm: "10% chance for Severe Bleed DoT (at 100.0).", leg: "Proc effect and 50% dmg splashes." },
+            { name: "Fencing", gm: "10% chance for Armor Pierce (at 100.0).", leg: "Proc effect and 50% dmg splashes." },
+            { name: "Macing", gm: "10% chance for Crushing Blow (+15% Crit chance @ 100.0).", leg: "Crit deals +50% Physical dmg (Shatter)." },
+            { name: "Archery", gm: "10% chance to Pin (Root 1.5s @ 100.0).", leg: "Proc and 50% dmg splashes." },
+            { name: "Magery", gm: "10% chance for Arcane Echo (at 100.0).", leg: "Echoes deal 100% dmg." },
+            { name: "Eval Intelligence", gm: "15% chance to reduce resistances by 20 (at 100.0).", leg: "Elemental detonation on flawed foes." },
+            { name: "Meditation", gm: "Adrenaline Rush (30 Mana @ <30% mana, at 100.0).", leg: "Next ability costs 0 resources." },
+            { name: "Magic Resist", gm: "15% chance to convert 20% dmg to HP (at 100.0).", leg: "5% chance nullify and reflect." },
+            { name: "Tracking", gm: "+5% Speed/Dmg vs last creature type (at 100.0).", leg: "10% chance to Mark for Death (+15%)." },
+            { name: "Forensic Eval", gm: "Restore 10% HP/Stam on kill (at 100.0).", leg: "Gain +10% Speed for 5s on kill." },
+            { name: "Item ID", gm: "10% chance for Adaptive Insulation (at 100.0).", leg: "Absorb mitigated dmg into mana." },
+            { name: "Hiding/Stealth", gm: "10% chance to Fade nullify hit (at 100.0).", leg: "Fade guarantees next hit is crit." },
+            { name: "Snooping/Steal", gm: "15% chance steal 10 stamina on hit (at 100.0).", leg: "Pilfers directly to pack." },
+            { name: "Remove Trap", gm: "15% chance root adjacent movers (at 100.0).", leg: "Snare explodes for Fire Damage." },
+            { name: "Alchemy", gm: "Ex-Pots deal extra dmg (scales with skill); ignore timer.", leg: "15% chance generate random pot on kill." },
+            { name: "Inscription", gm: "15% chance not consume mana (at 100.0).", leg: "Lethal hit absorbed once per 5 min." },
+            { name: "Poisoning", gm: "15% chance for stacking Poison DoT (at 100.0).", leg: "Consume poison for instant burst." },
+            { name: "Taste ID", gm: "15% chance for Auto-GHeal @ <50% (at 100.0).", leg: "Grants Total Refresh and Cure effects." },
+            { name: "Camping", gm: "+2 Regen aura stationary (at 100.0).", leg: "Aura grants 5% Damage Reduction." },
+            { name: "Begging", gm: "10% chance delay foe by 1.5s (at 100.0).", leg: "-25% dmg on next hit." }
         ];
 
         let activeClassIndex = 0;
