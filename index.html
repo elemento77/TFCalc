@@ -39,30 +39,37 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(255, 45, 45, 0.04) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.04) 0%, transparent 40%),
-                radial-gradient(ellipse at center, rgba(15, 15, 15, 0) 0%, #000 100%);
+            background-image: url('Assets/background.png');
+            background-size: cover;
+            background-position: center;
             background-attachment: fixed;
         }
 
-        /* NANO MAGIC CIRCLE BACKGROUND */
-        .magic-bg {
+
+
+        /* THEME BACKGROUND VIDEO */
+        .bg-video {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 1400px;
-            height: 1400px;
-            background: url('Assets/nano_magic_circle.png') no-repeat center;
-            background-size: contain;
-            z-index: -1;
-            opacity: 0.2;
-            animation: rotateCircle 120s infinite linear;
-            pointer-events: none;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -3;
+            object-fit: cover;
+            opacity: 0.6;
+            filter: brightness(0.7) contrast(1.2);
         }
 
-        @keyframes rotateCircle { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(3, 3, 3, 0.4) 40%, rgba(3, 3, 3, 0.9) 100%);
+            z-index: -2;
+            pointer-events: none;
+        }
 
         .container {
             max-width: 1440px;
@@ -85,11 +92,20 @@
             text-align: center;
         }
 
+        .logo-container {
+            margin-bottom: 40px;
+        }
+
         .logo {
             max-width: 500px;
-            margin-bottom: 40px;
             filter: drop-shadow(0 0 20px var(--accent-blood-glow));
             transition: var(--transition);
+        }
+
+        .header-icon-small {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 0 8px var(--accent-blood-glow));
         }
 
         .sticky-tracker {
@@ -146,6 +162,20 @@
             letter-spacing: 0.25em;
             opacity: 0.7;
             margin-top: 4px;
+            transition: var(--transition);
+        }
+
+        .points-label-small.maniacal-glow {
+            color: var(--accent-blood);
+            text-shadow: 0 0 10px var(--accent-blood-glow), 0 0 20px var(--accent-blood);
+            opacity: 1;
+            font-weight: 900;
+            animation: maniacalPulse 1.5s infinite alternate;
+        }
+
+        @keyframes maniacalPulse {
+            from { transform: scale(1); filter: brightness(1); }
+            to { transform: scale(1.1); filter: brightness(1.5); }
         }
 
         .class-select-box {
@@ -394,7 +424,9 @@
         @media (max-width: 900px) {
             .container { padding: 10px 10px 100px; }
             
-            .logo { max-width: 180px; margin-bottom: 20px; }
+            .logo { max-width: 180px; }
+            .logo-container { margin-bottom: 20px; }
+            .header-icon-small { width: 24px; height: 24px; }
 
             .sticky-tracker { 
                 flex-direction: row; 
@@ -469,11 +501,12 @@
 
 <body>
 
-    <div class="magic-bg"></div>
+    <div class="bg-overlay"></div>
 
     <!-- STICKY HEADER AT TOP -->
     <div class="sticky-tracker">
         <div class="tracker-left">
+            <img src="Assets/tf-icon.png" alt="Icon" class="header-icon-small">
             <select id="classSelect" class="class-select-box" onchange="changeClass()"></select>
             <button class="btn-reset gold" onclick="resetEverything()">Global Reset</button>
             <button id="muteBtn" class="btn-system" onclick="toggleMute()" title="Toggle Music">🔊</button>
@@ -487,11 +520,17 @@
 
     <div class="container">
         <header>
-            <img src="Assets/tf-logo.png" alt="Terra Fatalis" class="logo">
+            <div class="logo-container">
+                <img src="Assets/tf-logo.png" alt="Terra Fatalis" class="logo">
+            </div>
         </header>
 
         <audio id="bgMusic" loop>
             <source src="Assets/Terra Fatalis Instrumental.mp3" type="audio/mpeg">
+        </audio>
+
+        <audio id="unlockSound">
+            <source src="Assets/Unlock.mp3" type="audio/mpeg">
         </audio>
 
         <div class="section-title">Core Disciplines</div>
@@ -624,6 +663,16 @@
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playSound(type) {
+            if (type === 'lock') {
+                const snd = document.getElementById('unlockSound');
+                if (snd) {
+                    snd.volume = 0.3;
+                    snd.currentTime = 0;
+                    snd.play().catch(() => {});
+                }
+                return;
+            }
+
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
@@ -666,7 +715,7 @@
                     playSound('add');
                 } else if (skill.rank === 11 && available >= 4) {
                     skill.rank = 12;
-                    playSound('add');
+                    playSound('lock');
                 }
             } else {
                 if (skill.rank === 12) {
@@ -685,6 +734,13 @@
             container.innerHTML = '';
             const spent = getPointsSpent();
             document.getElementById('pointsRemaining').textContent = `${MAX_POINTS - spent} / ${MAX_POINTS}`;
+
+            const label = document.querySelector('.points-label-small');
+            if (spent >= MAX_POINTS) {
+                label.classList.add('maniacal-glow');
+            } else {
+                label.classList.remove('maniacal-glow');
+            }
 
             classes[activeClassIndex].skills.forEach(skill => {
                 const isMax = skill.rank === 12;
