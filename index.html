@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terra Fatalis | PvM Class Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #030303;
+            --text-color: #ffffff;
+            --accent-blood: #ff2d2d;
+            --accent-blood-glow: rgba(255, 45, 45, 0.5);
+            --royal-gold: #D4AF37;
+            --royal-gold-glow: rgba(212, 175, 55, 0.4);
+            --card-bg: rgba(10, 10, 10, 0.85);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(7, 7, 7, 0.92);
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 45, 45, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.04) 0%, transparent 40%),
+                radial-gradient(ellipse at center, rgba(15, 15, 15, 0) 0%, #000 100%);
+            background-attachment: fixed;
+        }
+
+        /* NANO MAGIC CIRCLE BACKGROUND */
+        .magic-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1400px;
+            height: 1400px;
+            background: url('Assets/nano_magic_circle.png') no-repeat center;
+            background-size: contain;
+            z-index: -1;
+            opacity: 0.2;
+            animation: rotateCircle 120s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes rotateCircle { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+            width: 100%;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 500px;
+            margin-bottom: 40px;
+            filter: drop-shadow(0 0 20px var(--accent-blood-glow));
+            transition: var(--transition);
+        }
+
+        .sticky-tracker {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(7, 7, 7, 0.98));
+            backdrop-filter: blur(30px);
+            padding: 10px 40px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .tracker-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .active-class-badge {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--accent-blood);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-left: 2px solid var(--accent-blood);
+            padding-left: 15px;
+        }
+
+        .points-display-main {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .points-val-large {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 900;
+            line-height: 1;
+            color: var(--accent-blood);
+            text-shadow: 0 0 15px var(--accent-blood-glow);
+        }
+
+        .points-label-small {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .class-select-box {
+            background: #111;
+            border: 1px solid var(--card-border);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .btn-system {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .btn-system:hover { border-color: var(--accent-blood); background: rgba(255,45,45,0.1); }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.6);
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            transition: var(--transition);
+        }
+
+        .btn-reset:hover {
+            border-color: var(--accent-blood);
+            color: var(--accent-blood);
+            background: rgba(255, 45, 45, 0.05);
+        }
+
+        .btn-reset.gold {
+            border-color: var(--royal-gold);
+            color: var(--royal-gold);
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin: 60px 0 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #fff;
+        }
+
+        .section-title::before {
+            content: "";
+            width: 40px;
+            height: 2px;
+            background: var(--accent-blood);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-card {
+            background-image: linear-gradient(rgba(10, 10, 10, 0.65), rgba(10, 10, 10, 0.65)), url('Assets/skill-card-bg-v2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            border-color: rgba(255, 45, 45, 0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .skill-name {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .rank-badge {
+            background: #151515;
+            padding: 6px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--accent-blood);
+        }
+
+        .rank-badge.active {
+            color: var(--royal-gold);
+            border-color: var(--royal-gold);
+            box-shadow: 0 0 10px var(--royal-gold-glow);
+        }
+
+        .rank-badge.max {
+            color: #fff;
+            background: var(--royal-gold);
+            border-color: var(--royal-gold);
+            box-shadow: 0 0 20px var(--royal-gold-glow);
+        }
+
+        .rank-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover:not(:disabled) {
+            background: var(--accent-blood);
+            border-color: var(--accent-blood);
+            box-shadow: 0 0 15px var(--accent-blood-glow);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.1;
+            cursor: not-allowed;
+        }
+
+        .skill-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 30px;
+            min-height: 4.8em;
+        }
+
+        .val-hl { color: var(--accent-blood); font-weight: 700; }
+
+        .capstone-box {
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 20px;
+            padding: 22px;
+            transition: var(--transition);
+        }
+
+        .capstone-box.unlocked {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(0,0,0,0));
+            border: 1px solid var(--royal-gold);
+            box-shadow: inset 0 0 25px rgba(212, 175, 55, 0.05);
+        }
+
+        .capstone-title {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--royal-gold);
+            margin-bottom: 8px;
+        }
+
+        .utility-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: var(--transition);
+        }
+
+        .util-select-v2 {
+            width: 100%;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: var(--font-heading);
+            font-weight: 600;
+        }
+
+        .effect-leg { 
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            margin-top: 10px;
+            padding-top: 10px;
+            color: var(--royal-gold);
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding: 60px;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .container { padding: 10px 10px 100px; }
+            
+            .logo { max-width: 180px; margin-bottom: 20px; }
+
+            .sticky-tracker { 
+                flex-direction: row; 
+                flex-wrap: wrap;
+                gap: 10px; 
+                padding: 10px 15px;
+                justify-content: space-between;
+            }
+            
+            .tracker-left { 
+                flex-direction: row; 
+                width: auto;
+                gap: 8px;
+                flex: 1;
+            }
+            
+            .class-select-box { 
+                padding: 6px 10px;
+                font-size: 0.85rem;
+                flex: 1;
+            }
+
+            .btn-reset { 
+                padding: 6px 10px;
+                font-size: 0.7rem;
+                width: auto;
+            }
+
+            .btn-system {
+                padding: 6px 8px;
+                font-size: 0.8rem;
+            }
+
+            .points-display-main { 
+                align-items: flex-end; 
+                width: auto;
+                border-top: none;
+                padding-top: 0;
+            }
+            
+            .points-val-large { font-size: 1.4rem; }
+            .points-label-small { font-size: 0.5rem; letter-spacing: 0.1em; }
+
+            .section-title { 
+                font-size: 1.2rem; 
+                margin: 20px 0 15px;
+            }
+            
+            .section-title::before { display: none; }
+
+            .skills-grid { 
+                grid-template-columns: 1fr; 
+                gap: 15px;
+            }
+
+            .skill-card { padding: 25px; border-radius: 20px; }
+            
+            .skill-name { font-size: 1.3rem; }
+            
+            .rank-controls { gap: 10px; }
+            
+            .control-btn { width: 44px; height: 44px; }
+        }
+
+        /* Support for very small screens */
+        @media (max-width: 480px) {
+            .points-val-large { font-size: 1.8rem; }
+            .logo { max-width: 260px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="magic-bg"></div>
+
+    <!-- STICKY HEADER AT TOP -->
+    <div class="sticky-tracker">
+        <div class="tracker-left">
+            <select id="classSelect" class="class-select-box" onchange="changeClass()"></select>
+            <button class="btn-reset gold" onclick="resetEverything()">Global Reset</button>
+            <button id="muteBtn" class="btn-system" onclick="toggleMute()" title="Toggle Music">🔊</button>
+        </div>
+        
+        <div class="points-display-main">
+            <div class="points-val-large" id="pointsRemaining">50 / 50</div>
+            <div class="points-label-small">Maniacal Energy</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <img src="Assets/tf-logo.png" alt="Terra Fatalis" class="logo">
+        </header>
+
+        <audio id="bgMusic" loop>
+            <source src="Assets/Terra Fatalis Instrumental.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="section-title">Core Disciplines</div>
+        <div class="skills-grid" id="skillsContainer"></div>
+
+        <div class="section-title">Sacred Specializations</div>
+        <div class="skills-grid" id="utilityContainer"></div>
+
+        <footer>
+            <div style="font-size: 0.7rem; letter-spacing: 0.4em; opacity: 0.4; text-transform: uppercase;">Terra Fatalis &copy; 2026</div>
+        </footer>
+    </div>
+
+    <script>
+        const MAX_POINTS = 50;
+        
+        const classes = [
+            {
+                name: "Berzerker", archetype: "2H Melee",
+                skills: [
+                    { id: "bez_s1", name: "Whirlwind Strike", type: ".s1 Active", getDesc: (r) => `Deals Physical Ability Damage in 1-tile AoE. Dmg <span class="val-hl">+${r * 3}%</span>. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Vortex", capDesc: "Pulls creatures within 3 tiles into melee range. Refunds 1s of CD per creature hit (max 4s).", rank: 0 },
+                    { id: "bez_s2", name: "Bloodlust", type: ".s2 Active", getDesc: (r) => `Gain <span class="val-hl">+${r * 4}%</span> Melee and Physical Dmg for 12s. CD <span class="val-hl">${(20 - r).toFixed(1)}s</span>.`, capName: "Bloodbath", capDesc: "Crit hits and abilities reduce all active skill CDs by 1s (2s ICD).", rank: 0 },
+                    { id: "bez_s3", name: "Brutal Leap", type: ".s3 Active", getDesc: (r) => `Jump to target. Range <span class="val-hl">+${(r * 0.2).toFixed(1)}</span>. Stun <span class="val-hl">+${(r * 0.05).toFixed(2)}s</span>. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Earthquake", capDesc: "3-tile tremor slows movement and swing speed by 30% for 5s.", rank: 0 },
+                    { id: "bez_p1", name: "Heavy Momentum", type: "Passive", getDesc: (r) => `Reduces melee swing period vs creatures by <span class="val-hl">${r * 2}%</span>.`, capName: "Crushing Impact", capDesc: "15% chance to ignore AR absorb and apply 0.5s stagger on hit.", rank: 0 },
+                    { id: "bez_p2", name: "Thick Skin", type: "Passive", getDesc: (r) => `Reduces all damage taken from creatures by <span class="val-hl">${r * 1}%</span>.`, capName: "Vengeful Call", capDesc: "Taking hit > 20 dmg grants +5 stamina (10s ICD).", rank: 0 },
+                    { id: "bez_p3", name: "Cleave", type: "Passive", getDesc: (r) => `<span class="val-hl">${r * 1}%</span> chance to deal 40% splash physical dmg to 1 adjacent foe and bleed them.`, capName: "Great Cleave", capDesc: "Can hit 2 targets; splash damage increased to 60%.", rank: 0 }
+                ]
+            },
+            {
+                name: "Templar", archetype: "1H + Shield",
+                skills: [
+                    { id: "tmp_s1", name: "Holy Shield", type: ".s1 Active", getDesc: (r) => `Grants <span class="val-hl">${1 + Math.floor(r/3)}</span> block charges. Dur <span class="val-hl">${r+5}s</span>. CD <span class="val-hl">${(20 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Aegis", capDesc: "Charges no longer expire. Consuming a charge grants party 50 HP shield for 5s.", rank: 0 },
+                    { id: "tmp_s2", name: "Judgment", type: ".s2 Active", getDesc: (r) => `Heavy Energy Strike. Dmg <span class="val-hl">+${r * 4}%</span>. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Condemnation", capDesc: "Target takes 10% more damage for 8s. Parry reduces Judgment CD by 1s.", rank: 0 },
+                    { id: "tmp_s3", name: "Provoke", type: ".s3 Active", getDesc: (r) => `Forces creature to attack you. Dur <span class="val-hl">+${r * 0.5}s</span>. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Mass Provocation", capDesc: "Affects 4-tile AoE. Taunted targets ignore 15% of AR absorb.", rank: 0 },
+                    { id: "tmp_p1", name: "Guardian's Zeal", type: "Passive", getDesc: (r) => `Increases shield parry chance vs creatures by <span class="val-hl">${r * 2}%</span>.`, capName: "Shield Slam", capDesc: "Parrying has 20% chance to stun for 1s (6s ICD per foe).", rank: 0 },
+                    { id: "tmp_p2", name: "Retribution", type: "Passive", getDesc: (r) => `<span class="val-hl">${r * 2}%</span> chance when hit to retaliate with Energy Ability Damage.`, capName: "Holy Chain", capDesc: "Retribution arcs to a second target for 50% damage.", rank: 0 },
+                    { id: "tmp_p3", name: "Aura of Devotion", type: "Passive", getDesc: (r) => `Party (5-tile) gains <span class="val-hl">+${Math.floor(r/3)}</span> stamina regen.`, capName: "Divine Grace", capDesc: "Party has 10% chance to not spend stamina on weapon specials.", rank: 0 }
+                ]
+            },
+            {
+                name: "Marksman", archetype: "Bows",
+                skills: [
+                    { id: "mrk_s1", name: "Piercing Shot", type: ".s1 Active", getDesc: (r) => `Line shot. Length <span class="val-hl">+${(r * 0.5).toFixed(1)}</span>. Dmg <span class="val-hl">+${r * 2}%</span>. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Pinning Shot", capDesc: "Targets are rooted for 2s. Hitting 3+ foes refunds 3s CD.", rank: 0 },
+                    { id: "mrk_s2", name: "Hunter's Mark", type: ".s2 Active", getDesc: (r) => `Single mark for <span class="val-hl">${r+10}s</span>. Target takes <span class="val-hl">+${r}%</span> dmg from you. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Shared Prey", capDesc: "Marksman damage bonus shared with party within 8 tiles.", rank: 0 },
+                    { id: "mrk_s3", name: "Rain of Arrows", type: ".s3 Active", getDesc: (r) => `AoE volley. Radius <span class="val-hl">+${(r * 0.1).toFixed(1)}</span>. Slow <span class="val-hl">${r * 2}%</span>. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Volley Downpour", capDesc: "Leaves Poison field that reduces creature AR absorb by 10%.", rank: 0 },
+                    { id: "mrk_p1", name: "Eagle Eye", type: "Passive", getDesc: (r) => `Increases bow range by <span class="val-hl">+${Math.floor(r/2)}</span> tiles.`, capName: "Point Blank", capDesc: "100% chance to knockback foes within 2 tiles (6s ICD).", rank: 0 },
+                    { id: "mrk_p2", name: "Fletcher's Luck", type: "Passive", getDesc: (r) => `<span class="val-hl">${r}%</span> chance to not consume arrows/bolts.`, capName: "Recycle", capDesc: "Saving ammo grants +5% swing speed for next shot (stacks 3).", rank: 0 },
+                    { id: "mrk_p3", name: "Precise Strikes", type: "Passive", getDesc: (r) => `Grants <span class="val-hl">+${r}%</span> Critical Strike chance vs creatures.`, capName: "Executioner", capDesc: "Targets below 20% HP take +50% crit damage.", rank: 0 }
+                ]
+            },
+            {
+                name: "Arcanist", archetype: "Staff Caster",
+                skills: [
+                    { id: "arc_s1", name: "Arcane Nova", type: ".s1 Active", getDesc: (r) => `Fire/Energy AoE. Dmg <span class="val-hl">+${r * 3}%</span>. Radius <span class="val-hl">+${(r * 0.1).toFixed(1)}</span>. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Supernova", capDesc: "Pulls foes in and leaves 4s Fire DoT (20% init dmg).", rank: 0 },
+                    { id: "arc_s2", name: "Elemental Surge", type: ".s2 Active", getDesc: (r) => `For 10s: <span class="val-hl">+${r * 2}%</span> Spell Dmg. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Stormweaver", capDesc: "Casting during Surge reduces Nova/Blink CD by 0.5s.", rank: 0 },
+                    { id: "arc_s3", name: "Blink", type: ".s3 Active", getDesc: (r) => `Teleport range <span class="val-hl">+${(r * 0.2).toFixed(1)}</span>. CD <span class="val-hl">${(10 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Mirror Image", capDesc: "Leaves 2 decoy mages that cast weak spells then explode for Cold dmg.", rank: 0 },
+                    { id: "arc_p1", name: "Elemental Affinity", type: "Passive", getDesc: (r) => `<span class="val-hl">+${r}%</span> Fire, Cold, and Energy spell damage.`, capName: "Elemental Resonance", capDesc: "Chain different elements for +20% dmg to next spell (8s window).", rank: 0 },
+                    { id: "arc_p2", name: "Quick Casting", type: "Passive", getDesc: (r) => `Reduces spell circle cast delays by <span class="val-hl">${r}%</span>.`, capName: "Echo Cast", capDesc: "15% chance for Low level spells to cast twice at 50% dmg.", rank: 0 },
+                    { id: "arc_p3", name: "Leyline Attunement", type: "Passive", getDesc: (r) => `<span class="val-hl">+${Math.floor(r/3)}</span> flat mana regen and <span class="val-hl">+${r}%</span> passive regen.`, capName: "Mana Well", capDesc: "Standing still for 3s doubles passive mana regen.", rank: 0 }
+                ]
+            },
+            {
+                name: "Deathcaller", archetype: "Necromancer",
+                skills: [
+                    { id: "dth_s1", name: "Ossuary Ritual", type: ".s1 Active", getDesc: (r) => `Summon <span class="val-hl">${1 + Math.floor(r/4)}</span> skeletons. Skele stats scale with rank.`, capName: "Bone Armor", capDesc: "Skeletons absorb 3 hits. Death refunds 5s to other skill CDs.", rank: 0 },
+                    { id: "dth_s2", name: "Dark Sacrement", type: ".s2 Active", getDesc: (r) => `Buff summons: <span class="val-hl">+${r * 2}%</span> Atk Speed & Dmg for 8s. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Corpse Explosion", capDesc: "Detonate minion for heavy Poison AoE based on remaining HP.", rank: 0 },
+                    { id: "dth_s3", name: "Curse of Decay", type: ".s3 Active", getDesc: (r) => `Reduces Resist/Regen by <span class="val-hl">${r}%</span> in <span class="val-hl">${(1+r*0.1).toFixed(1)}</span> radius. CD <span class="val-hl">${(15 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Life Leeching", capDesc: "Cursed foes heal attacking minions for 10% of damage dealt.", rank: 0 },
+                    { id: "dth_p1", name: "Necrotic Potency", type: "Passive", getDesc: (r) => `Increases all Necromancy/Spell damage by <span class="val-hl">${r}%</span>.`, capName: "Death's Reach", capDesc: "15% chance on spell hit to reduce foe STR by 10 (10s ICD).", rank: 0 },
+                    { id: "dth_p2", name: "Essence Harvest", type: "Passive", getDesc: (r) => `Gain <span class="val-hl">${1+r}</span> mana on kill.`, capName: "Soul Overflow", capDesc: "Excess mana recovery becomes a temporary HP shield.", rank: 0 },
+                    { id: "dth_p3", name: "Staff Mastery", type: "Passive", getDesc: (r) => `<span class="val-hl">${r * 2}%</span> chance to avoid disruption while meditating/hit.`, capName: "Arcane Deflection", capDesc: "10% chance to reflect creature spells back to caster.", rank: 0 }
+                ]
+            }
+        ];
+
+        const skillData = [
+            { name: "Tactics", gm: "10% chance on struck to refund 2s CD.", leg: "+25% dmg to next ability after refund." },
+            { name: "Anatomy", gm: "15% chance for 20% Physical dmg bypass.", leg: "Reduces foe damage by 10% for 4s." },
+            { name: "Parrying", gm: "15% chance to reflect 30% melee dmg.", leg: "Gain HP shield equal to reflected amount." },
+            { name: "Swordsmanship", gm: "10% chance for Severe Bleed DoT.", leg: "Proc effect and 50% dmg splashes." },
+            { name: "Fencing", gm: "10% chance for Armor Pierce (50% ignore).", leg: "Proc effect and 50% dmg splashes." },
+            { name: "Macing", gm: "10% chance for Crushing Blow (+15% Crit).", leg: "Crit deals +50% Physical dmg." },
+            { name: "Archery", gm: "10% chance to Pin (Root 1.5s).", leg: "Proc and 50% dmg splashes." },
+            { name: "Magery", gm: "10% chance for Arcane Echo (50% dmg).", leg: "Echoes deal 100% dmg." },
+            { name: "Eval Intelligence", gm: "15% chance for Expose Flaw (-20 Resist).", leg: "Elemental detonation on flawed foes." },
+            { name: "Meditation", gm: "Adrenaline Rush (30 Mana @ <30%).", leg: "Next ability costs 0 resources." },
+            { name: "Magic Resist", gm: "15% chance to convert 20% dmg to HP.", leg: "5% chance nullify and reflect." },
+            { name: "Tracking", gm: "+5% Speed/Dmg vs last creature type.", leg: "10% chance to Mark for Death (+15%)." },
+            { name: "Forensic Eval", gm: "Restore 10% HP/Stam on kill.", leg: "Gain +10% Speed for 5s on kill." },
+            { name: "Item ID", gm: "10% chance for Adaptive Insulation.", leg: "Absorb mitigated dmg into mana." },
+            { name: "Hiding/Stealth", gm: "10% chance to Fade nullify hit.", leg: "Fade guarantees next hit is crit." },
+            { name: "Snooping/Steal", gm: "15% chance steal 10 stamina on hit.", leg: "Pilfers directly to pack." },
+            { name: "Remove Trap", gm: "15% chance root adjacent movers.", leg: "Snare explodes for Fire Damage." },
+            { name: "Alchemy", gm: "Ex-Pots deal extra Dmg; ignore timer.", leg: "15% chance generate random pot on kill." },
+            { name: "Inscription", gm: "15% chance not consume mana.", leg: "Lethal hit absorbed once per 5 min." },
+            { name: "Poisoning", gm: "15% chance for stacking Poison DoT.", leg: "Consume poison for instant burst." },
+            { name: "Taste ID", gm: "15% chance for Auto-GHeal @ <50%.", leg: "Clears poison and restores stamina." },
+            { name: "Camping", gm: "+2 Regen aura stationary.", leg: "Aura grants 5% Damage Reduction." },
+            { name: "Begging", gm: "10% chance delay foe by 1.5s.", leg: "-25% dmg on next hit." }
+        ];
+
+        let activeClassIndex = 0;
+        let selectedSkills = [null, null, null, null, null];
+        let legendaryStates = [false, false, false, false, false];
+
+        function init() {
+            const select = document.getElementById('classSelect');
+            classes.forEach((c, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = c.name;
+                select.appendChild(opt);
+            });
+            render();
+            renderUtilities();
+        }
+
+        function changeClass() {
+            activeClassIndex = parseInt(document.getElementById('classSelect').value);
+            render();
+        }
+
+        function getPointsSpent() {
+            let spent = 0;
+            classes[activeClassIndex].skills.forEach(s => {
+                if (s.rank <= 11) spent += s.rank;
+                else spent += 15;
+            });
+            return spent;
+        }
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+            if (type === 'add') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+            } else if (type === 'sub') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+            } else if (type === 'reset') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.1);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+            }
+
+            osc.start(now);
+            osc.stop(now + 0.1);
+        }
+
+        function updateRank(skillId, delta) {
+            const skill = classes[activeClassIndex].skills.find(s => s.id === skillId);
+            const totalSpent = getPointsSpent();
+            const available = MAX_POINTS - totalSpent;
+
+            if (delta > 0) {
+                if (skill.rank < 11 && available >= 1) {
+                    skill.rank++;
+                    playSound('add');
+                } else if (skill.rank === 11 && available >= 4) {
+                    skill.rank = 12;
+                    playSound('add');
+                }
+            } else {
+                if (skill.rank === 12) {
+                    skill.rank = 11;
+                    playSound('sub');
+                } else if (skill.rank > 0) {
+                    skill.rank--;
+                    playSound('sub');
+                }
+            }
+            render();
+        }
+
+        function render() {
+            const container = document.getElementById('skillsContainer');
+            container.innerHTML = '';
+            const spent = getPointsSpent();
+            document.getElementById('pointsRemaining').textContent = `${MAX_POINTS - spent} / ${MAX_POINTS}`;
+
+            classes[activeClassIndex].skills.forEach(skill => {
+                const isMax = skill.rank === 12;
+                const isActive = skill.rank > 0;
+                const canAdd = (skill.rank < 11 && (MAX_POINTS - spent) >= 1) || (skill.rank === 11 && (MAX_POINTS - spent) >= 4);
+                const card = document.createElement('div');
+                card.className = 'skill-card';
+                card.innerHTML = `
+                    <div class="skill-header">
+                        <div class="skill-name">${skill.name}</div>
+                        <div class="rank-badge ${isMax ? 'max' : (isActive ? 'active' : '')}">RANK ${skill.rank} / 12</div>
+                    </div>
+                    <div class="rank-controls">
+                        <button class="control-btn" onclick="updateRank('${skill.id}', -1)" ${skill.rank === 0 ? 'disabled' : ''}>-</button>
+                        <button class="control-btn" onclick="updateRank('${skill.id}', 1)" ${!canAdd ? 'disabled' : ''}>+</button>
+                        <div style="margin-left:auto; font-size: 0.7rem; font-weight:900; color:var(--accent-blood);">${skill.type}</div>
+                    </div>
+                    <div class="skill-desc">${skill.getDesc(Math.min(skill.rank, 11))}</div>
+                    <div class="capstone-box ${isMax ? 'unlocked' : ''}">
+                        <div class="capstone-title">${skill.capName}</div>
+                        <div class="capstone-info">${skill.capDesc}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderUtilities() {
+            const container = document.getElementById('utilityContainer');
+            container.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const box = document.createElement('div');
+                box.className = 'utility-box';
+                let options = '<option value="-1">Empty Focus</option>';
+                skillData.forEach((s, idx) => {
+                    options += `<option value="${idx}" ${selectedSkills[i] == idx ? 'selected' : ''}>${s.name}</option>`;
+                });
+                const info = selectedSkills[i] != null && selectedSkills[i] != -1 ? skillData[selectedSkills[i]] : null;
+                const isLeg = legendaryStates[i];
+                box.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:0.7rem; font-weight:900; color:var(--accent-blood);">SLOT ${i+1}</span>
+                        <label style="font-size:0.7rem; color:var(--royal-gold); cursor:pointer;">
+                            <input type="checkbox" ${isLeg ? 'checked' : ''} onchange="toggleLeg(${i})" ${info ? '' : 'disabled'}> LEG 120.0
+                        </label>
+                    </div>
+                    <select class="util-select-v2" onchange="setUtil(${i}, this.value)">${options}</select>
+                    <div style="font-size:0.85rem; margin-top:10px; color:rgba(255,255,255,0.7);">
+                        ${info ? `<div><strong>100.0:</strong> ${info.gm}</div>${isLeg ? `<div class="effect-leg"><strong>120.0 Bonus:</strong> ${info.leg}</div>` : ''}` : 'Select focus skill.'}
+                    </div>
+                `;
+                container.appendChild(box);
+            }
+        }
+
+        function setUtil(slot, val) { selectedSkills[slot] = val == -1 ? null : val; renderUtilities(); }
+        function toggleLeg(slot) { legendaryStates[slot] = !legendaryStates[slot]; renderUtilities(); }
+        function resetPoints() { 
+            classes[activeClassIndex].skills.forEach(s => s.rank = 0); 
+            playSound('reset');
+            render(); 
+        }
+        function resetEverything() { 
+            classes.forEach(c => c.skills.forEach(s => s.rank = 0)); 
+            selectedSkills = [null,null,null,null,null]; 
+            legendaryStates = [false,false,false,false,false]; 
+            playSound('reset');
+            render(); 
+            renderUtilities(); 
+        }
+
+        let isMuted = false;
+        function toggleMute() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('muteBtn');
+            isMuted = !isMuted;
+            music.muted = isMuted;
+            btn.textContent = isMuted ? '🔇' : '🔊';
+        }
+
+        window.onload = () => {
+            init();
+            
+            // Background Music Setup
+            const music = document.getElementById('bgMusic');
+            music.volume = 0.3;
+            
+            // Interaction to start music (browser policy)
+            const startMusic = () => {
+                music.play().catch(() => {});
+                document.removeEventListener('click', startMusic);
+            };
+            document.addEventListener('click', startMusic);
+        };
+    </script>
+</body>
+
+</html>
