@@ -189,15 +189,14 @@ def generate_classes_js(classes):
         js += f'                name: "{c["name"]}", archetype: "{c["archetype"]}",\n'
         js += "                skills: [\n"
         for s_idx, s in enumerate(c["skills"]):
-            # Build flavored description
-            parts = []
-            if s.get("flavor"): parts.append(s["flavor"])
-            if s.get("dmgType"): parts.append(f"{s['dmgType']} Damage")
-            if s.get("cost"): parts.append(f"Cost: {s['cost']}")
+            # Cost and flavor logic
+            flavor_line = s.get("flavor", "")
+            if s.get("dmgType"):
+                 if flavor_line: flavor_line += ". "
+                 flavor_line += f"{s['dmgType']} Damage"
             
-            flavor_line = ". ".join(parts)
-            if flavor_line: flavor_line += ". "
-            
+            cost_line = f"Cost: {s.get('cost')}" if s.get("cost") else ""
+
             # Processing rankDesc for math
             desc = s["rankDesc"].replace('`', '\\`').replace('"', '\\"')
             
@@ -214,11 +213,8 @@ def generate_classes_js(classes):
                                desc, flags=re.I)
 
             # Flexible scaling replacements for any "[num]% per rank" or "[num] unit per rank"
-            # Replace "+X% per rank" -> "+${r * X}%"
             desc = re.sub(r'([+-]?[\d.]+)% per rank', r'<span class="val-hl">${(r * \1) > 0 ? "+" : ""}${r * \1}%</span>', desc)
-            # Replace "X [unit] per rank" -> "${r * X} unit" 
-            # This handles tiles, stacks, charges, seconds, etc.
-            # Use toFixed(1) if it's a float
+            
             def replacer(match):
                 num = match.group(1)
                 unit = match.group(2)
@@ -228,13 +224,12 @@ def generate_classes_js(classes):
             
             desc = re.sub(r'([+-]?[\d.]+) (tiles|s|stacks|charge|mana|HP|stamina)s? per rank', replacer, desc)
             
-            # Special case for "1% per 2 ranks" or similar
             desc = re.sub(r'(\d+)% per (\d+) ranks', r'<span class="val-hl">+${Math.floor(r * \1 / \2)}%</span>', desc)
             desc = re.sub(r'\+(\d+) stam regen per (\d+) ranks', r'<span class="val-hl">+${Math.floor(r * \1 / \2)}</span> stam regen', desc)
 
-            get_desc_str = f"(r) => `{flavor_line}{desc}`"
+            get_desc_str = f"(r) => `{desc}`"
                 
-            js += f'                    {{ id: "{s["id"]}", name: "{s["name"]}", type: "{s["type"]}", getDesc: {get_desc_str}, capName: "{s["capName"]}", capDesc: "{s["capDesc"].replace('"', '\\"')}", rank: 0 }}'
+            js += f'                    {{ id: "{s["id"]}", name: "{s["name"]}", type: "{s["type"]}", flavor: "{flavor_line}", cost: "{cost_line}", getDesc: {get_desc_str}, capName: "{s["capName"]}", capDesc: "{s["capDesc"].replace('"', '\\"')}", rank: 0 }}'
             if s_idx < len(c["skills"]) - 1:
                 js += ","
             js += "\n"

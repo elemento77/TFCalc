@@ -268,9 +268,19 @@
             padding: 35px;
             display: flex;
             flex-direction: column;
-            transition: var(--transition);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, background-image 0.5s;
             position: relative;
             overflow: hidden;
+        }
+
+        .skill-card.max-flash {
+            animation: cardFlash 1s ease-out;
+        }
+
+        @keyframes cardFlash {
+            0% { background-image: linear-gradient(rgba(212, 175, 55, 0.4), rgba(212, 175, 55, 0.4)), url('Assets/skill-card-bg-v2.png'); }
+            50% { background-image: linear-gradient(rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.1)), url('Assets/skill-card-bg-v2.png'); }
+            100% { background-image: linear-gradient(rgba(10, 10, 10, 0.65), rgba(10, 10, 10, 0.65)), url('Assets/skill-card-bg-v2.png'); }
         }
 
         .skill-card:hover {
@@ -291,6 +301,18 @@
             font-size: 1.6rem;
             font-weight: 900;
             color: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-flavor-top {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+            font-family: var(--font-main);
+            text-transform: none;
         }
 
         .rank-badge {
@@ -322,6 +344,29 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 25px;
+            position: relative;
+        }
+
+        .skill-metadata-right {
+            margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .skill-type-tag {
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--accent-blood);
+            text-transform: uppercase;
+        }
+
+        .skill-cost-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: var(--font-main);
         }
 
         .control-btn {
@@ -546,60 +591,60 @@
 
     <script>
         const MAX_POINTS = 50;
-                          const classes = [
+                                const classes = [
             {
                 name: "Arcanist", archetype: "staff/leather caster",
                 skills: [
-                    { id: "arc_s1", name: "Arcane Nova", type: ".s1 Active", getDesc: (r) => `AoE burst. Fire and Energy (Split) Damage. Cost: 25 Mana. ability damage <span class="val-hl">+${r * 3}%</span>; radius +0.1 per rank (max +1); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Supernova", capDesc: "Arcane Nova pulls nearby creatures slightly inward and leaves a residual field that applies Fire DoT for 20% of the initial damage over 4s.", rank: 0 },
-                    { id: "arc_s2", name: "Elemental Surge", type: ".s2 Active", getDesc: (r) => `timed buff. Cost: 15 Mana. ability damage <span class="val-hl">+${r * 2}%</span> for 10s; mana cost of spells increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (risk trade); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Stormweaver", capDesc: "Casting during Elemental Surge reduces the remaining cooldown of Arcane Nova and Blink by 0.5s per spell cast.", rank: 0 },
-                    { id: "arc_s3", name: "Blink", type: ".s3 Active", getDesc: (r) => `mobility. Cost: 15 Mana. blink range <span class="val-hl">${(r * +0.2).toFixed(1)}</span> tiles (max +2 tiles); CD <span class="val-hl">${(9.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Mirror Image", capDesc: "Instead of a simple decoy, Blink leaves two functional mirror images that cast weak copies of your offensive spells for 4s before detonating for minor area Cold damage.", rank: 0 },
-                    { id: "arc_p1", name: "Elemental Affinity", type: "Passive", getDesc: (r) => `element damage. fire, cold, and energy spell damage vs creatures increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max 11%).`, capName: "Elemental Resonance", capDesc: "Casting different elements in sequence grants +20% damage to the next spell (PvM only, 8s window).", rank: 0 },
-                    { id: "arc_p2", name: "Quick Casting", type: "Passive", getDesc: (r) => `cast delay. circle cast delay vs creatures reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (applied to Sphere circle delays, max 11%).`, capName: "Echo Cast", capDesc: "15% chance for circle 1-2 spells to cast twice vs creatures (second cast at 50% damage).", rank: 0 },
-                    { id: "arc_p3", name: "Leyline Attunement", type: "Passive", getDesc: (r) => `mana sustain. +1 mana regen at ranks 3/6/9; passive mana regen increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> while in PvM (max 11%).`, capName: "Mana Well", capDesc: "After standing still for 3s, passive mana regen doubles until moving (PvM only).", rank: 0 }
+                    { id: "arc_s1", name: "Arcane Nova", type: ".s1 Active", flavor: "AoE burst. Fire and Energy (Split) Damage", cost: "Cost: 25 Mana", getDesc: (r) => `ability damage <span class="val-hl">+${r * 3}%</span>; radius +0.1 per rank (max +1); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Supernova", capDesc: "Arcane Nova pulls nearby creatures slightly inward and leaves a residual field that applies Fire DoT for 20% of the initial damage over 4s.", rank: 0 },
+                    { id: "arc_s2", name: "Elemental Surge", type: ".s2 Active", flavor: "timed buff", cost: "Cost: 15 Mana", getDesc: (r) => `ability damage <span class="val-hl">+${r * 2}%</span> for 10s; mana cost of spells increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (risk trade); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Stormweaver", capDesc: "Casting during Elemental Surge reduces the remaining cooldown of Arcane Nova and Blink by 0.5s per spell cast.", rank: 0 },
+                    { id: "arc_s3", name: "Blink", type: ".s3 Active", flavor: "mobility", cost: "Cost: 15 Mana", getDesc: (r) => `blink range <span class="val-hl">${(r * +0.2).toFixed(1)}</span> tiles (max +2 tiles); CD <span class="val-hl">${(9.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Mirror Image", capDesc: "Instead of a simple decoy, Blink leaves two functional mirror images that cast weak copies of your offensive spells for 4s before detonating for minor area Cold damage.", rank: 0 },
+                    { id: "arc_p1", name: "Elemental Affinity", type: "Passive", flavor: "element damage", cost: "", getDesc: (r) => `fire, cold, and energy spell damage vs creatures increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max 11%).`, capName: "Elemental Resonance", capDesc: "Casting different elements in sequence grants +20% damage to the next spell (PvM only, 8s window).", rank: 0 },
+                    { id: "arc_p2", name: "Quick Casting", type: "Passive", flavor: "cast delay", cost: "", getDesc: (r) => `circle cast delay vs creatures reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (applied to Sphere circle delays, max 11%).`, capName: "Echo Cast", capDesc: "15% chance for circle 1-2 spells to cast twice vs creatures (second cast at 50% damage).", rank: 0 },
+                    { id: "arc_p3", name: "Leyline Attunement", type: "Passive", flavor: "mana sustain", cost: "", getDesc: (r) => `+1 mana regen at ranks 3/6/9; passive mana regen increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> while in PvM (max 11%).`, capName: "Mana Well", capDesc: "After standing still for 3s, passive mana regen doubles until moving (PvM only).", rank: 0 }
                 ]
             },
             {
                 name: "Berzerker", archetype: "2H melee",
                 skills: [
-                    { id: "ber_s1", name: "Whirlwind Strike", type: ".s1 Active", getDesc: (r) => `AoE melee — Pack Bonus. Physical (Scales with Weapon Tier) Damage. Cost: 20 Stamina. ability damage <span class="val-hl">+${r * 3}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>; each creature hit beyond the first increases damage dealt to all targets by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (Pack Bonus, max +11% at rank 11).`, capName: "Vortex", capDesc: "Whirlwind pulls creatures within 3 tiles inward before striking. Refunds 1s of cooldown per creature hit up to 4s total.", rank: 0 },
-                    { id: "ber_s2", name: "Bloodlust", type: ".s2 Active", getDesc: (r) => `self buff. Cost: 10 HP. ability damage <span class="val-hl">+${r * 4}%</span> to melee and physical attacks for 8s; CD <span class="val-hl">${(19 - (r * 1)).toFixed(1)}s</span>.`, capName: "Bloodbath", capDesc: "During Bloodlust, weapon critical hits or abilities vs creatures reduce all active cooldowns by 1s (ICD 2s).", rank: 0 },
-                    { id: "ber_s3", name: "Brutal Leap", type: ".s3 Active", getDesc: (r) => `gap close + Frenzy ignition. Physical (Scales with Weapon Tier) Damage. Cost: 15 Stamina. leap range <span class="val-hl">${(r * +0.2).toFixed(1)}</span> tiles (cap +2 tiles); grants Frenzy stacks on landing scaling with rank (ranks 1-3: 1 stack, ranks 4-6: 2 stacks, ranks 7-9: 3 stacks, ranks 10+: 4 stacks); short interrupt on landing prevents immediate retaliation; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Savage Impact", capDesc: "If landing with 4 or more Frenzy stacks carried from a previous target, the landing hit is an automatic critical strike.", rank: 0 },
-                    { id: "ber_p1", name: "Heavy Momentum", type: "Passive", getDesc: (r) => `tempo. swing period vs creatures reduced by <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> (max 22%). Compounds with Blood Frenzy stack speed bonus.`, capName: "Crushing Impact", capDesc: "15% chance on melee hit vs creatures to ignore absorb for that hit and apply 0.5s stagger.", rank: 0 },
-                    { id: "ber_p2", name: "Thick Skin", type: "Passive", getDesc: (r) => `survivability. damage taken from creatures reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max 11%).`, capName: "Vengeful Call", capDesc: "When taking a single hit greater than 20 damage from a creature, gain +5 stamina (ICD 10s).", rank: 0 },
-                    { id: "ber_p3", name: "Blood Frenzy", type: "Passive", getDesc: (r) => `single-target escalation. consecutive hits on the same target build Frenzy stacks (max 6); each active stack increases swing speed by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> and deals physical splash to all adjacent creatures equal to <span class="val-hl">${(r * 5) > 0 ? "+" : ""}${r * 5}%</span> of base weapon damage; switching targets resets stacks to zero; on kill stacks freeze for 3s — Brutal Leap within this window transfers all stacks to the new target.`, capName: "Blood Ignition", capDesc: "At max 6 stacks, the next hit automatically triggers a free physical detonation on the target and all adjacent creatures equal to 40% weapon damage, then resets stacks to zero.", rank: 0 }
+                    { id: "ber_s1", name: "Whirlwind Strike", type: ".s1 Active", flavor: "AoE melee — Pack Bonus. Physical (Scales with Weapon Tier) Damage", cost: "Cost: 20 Stamina", getDesc: (r) => `ability damage <span class="val-hl">+${r * 3}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>; each creature hit beyond the first increases damage dealt to all targets by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (Pack Bonus, max +11% at rank 11).`, capName: "Vortex", capDesc: "Whirlwind pulls creatures within 3 tiles inward before striking. Refunds 1s of cooldown per creature hit up to 4s total.", rank: 0 },
+                    { id: "ber_s2", name: "Bloodlust", type: ".s2 Active", flavor: "self buff", cost: "Cost: 10 HP", getDesc: (r) => `ability damage <span class="val-hl">+${r * 4}%</span> to melee and physical attacks for 8s; CD <span class="val-hl">${(19 - (r * 1)).toFixed(1)}s</span>.`, capName: "Bloodbath", capDesc: "During Bloodlust, weapon critical hits or abilities vs creatures reduce all active cooldowns by 1s (ICD 2s).", rank: 0 },
+                    { id: "ber_s3", name: "Brutal Leap", type: ".s3 Active", flavor: "gap close + Frenzy ignition. Physical (Scales with Weapon Tier) Damage", cost: "Cost: 15 Stamina", getDesc: (r) => `leap range <span class="val-hl">${(r * +0.2).toFixed(1)}</span> tiles (cap +2 tiles); grants Frenzy stacks on landing scaling with rank (ranks 1-3: 1 stack, ranks 4-6: 2 stacks, ranks 7-9: 3 stacks, ranks 10+: 4 stacks); short interrupt on landing prevents immediate retaliation; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Savage Impact", capDesc: "If landing with 4 or more Frenzy stacks carried from a previous target, the landing hit is an automatic critical strike.", rank: 0 },
+                    { id: "ber_p1", name: "Heavy Momentum", type: "Passive", flavor: "tempo", cost: "", getDesc: (r) => `swing period vs creatures reduced by <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> (max 22%). Compounds with Blood Frenzy stack speed bonus.`, capName: "Crushing Impact", capDesc: "15% chance on melee hit vs creatures to ignore absorb for that hit and apply 0.5s stagger.", rank: 0 },
+                    { id: "ber_p2", name: "Thick Skin", type: "Passive", flavor: "survivability", cost: "", getDesc: (r) => `damage taken from creatures reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max 11%).`, capName: "Vengeful Call", capDesc: "When taking a single hit greater than 20 damage from a creature, gain +5 stamina (ICD 10s).", rank: 0 },
+                    { id: "ber_p3", name: "Blood Frenzy", type: "Passive", flavor: "single-target escalation", cost: "", getDesc: (r) => `consecutive hits on the same target build Frenzy stacks (max 6); each active stack increases swing speed by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> and deals physical splash to all adjacent creatures equal to <span class="val-hl">${(r * 5) > 0 ? "+" : ""}${r * 5}%</span> of base weapon damage; switching targets resets stacks to zero; on kill stacks freeze for 3s — Brutal Leap within this window transfers all stacks to the new target.`, capName: "Blood Ignition", capDesc: "At max 6 stacks, the next hit automatically triggers a free physical detonation on the target and all adjacent creatures equal to 40% weapon damage, then resets stacks to zero.", rank: 0 }
                 ]
             },
             {
                 name: "Deathcaller", archetype: "staff/leather necro/summoner",
                 skills: [
-                    { id: "dea_s1", name: "Ossuary Ritual", type: ".s1 Active", getDesc: (r) => `raise skeleton. Physical (Skeleton melee) Damage. Cost: 15 Mana. max skeletons increases with rank (1 at rank 1, 2 at rank 4, 3 at rank 8); skeleton power <span class="val-hl">${(r * +1) > 0 ? "+" : ""}${r * +1}%</span>; cooldown fixed at 15s.`, capName: "Bone Armor", capDesc: "Skeletons spawn with bone armor absorbing the next 3 physical hits completely. When a skeleton dies it refunds 5s of cooldown to all other active skills.", rank: 0 },
-                    { id: "dea_s2", name: "Dark Sacrement", type: ".s2 Active", getDesc: (r) => `minion frenzy. Poison (Corpse Explosion) Damage. Cost: 20 Mana. ability damage <span class="val-hl">+${r * 2}%</span> to all active summons for 8s; summon attack speed <span class="val-hl">${(r * +2) > 0 ? "+" : ""}${r * +2}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Corpse Explosion", capDesc: "Targeting a specific undead minion causes it to detonate, dealing heavy AoE Poison damage based on its remaining HP.", rank: 0 },
-                    { id: "dea_s3", name: "Curse of Decay", type: ".s3 Active", getDesc: (r) => `AoE debuff. Cost: 15 Mana. radius +0.1 per rank (max +1); creature resistance reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span>; creature HP regen reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Life Leeching", capDesc: "Cursed creatures heal attacking undead minions for 10% of the damage dealt.", rank: 0 },
-                    { id: "dea_p1", name: "Necrotic Potency", type: "Passive", getDesc: (r) => `spell power. spell damage vs creatures increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max 11%).`, capName: "Death's Reach", capDesc: "15% chance on spell hit to reduce creature STR by 10 for 5s (ICD per target 10s).", rank: 0 },
-                    { id: "dea_p2", name: "Essence Harvest", type: "Passive", getDesc: (r) => `mana on kill. on creature kill, restore mana equal to 1 + rank (scales each rank, max 12 mana at rank 11).`, capName: "Soul Overflow", capDesc: "If mana is full when Essence Harvest triggers, the excess becomes a temporary HP shield for 10s.", rank: 0 },
-                    { id: "dea_p3", name: "Staff Mastery", type: "Passive", getDesc: (r) => `casting under pressure. chance to avoid cast disruption from creature hits increases by <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> (PvM only, max 22%).`, capName: "Arcane Deflection", capDesc: "10% chance to reflect creature spells back at the caster.", rank: 0 }
+                    { id: "dea_s1", name: "Ossuary Ritual", type: ".s1 Active", flavor: "raise skeleton. Physical (Skeleton melee) Damage", cost: "Cost: 15 Mana", getDesc: (r) => `max skeletons increases with rank (1 at rank 1, 2 at rank 4, 3 at rank 8); skeleton power <span class="val-hl">${(r * +1) > 0 ? "+" : ""}${r * +1}%</span>; cooldown fixed at 15s.`, capName: "Bone Armor", capDesc: "Skeletons spawn with bone armor absorbing the next 3 physical hits completely. When a skeleton dies it refunds 5s of cooldown to all other active skills.", rank: 0 },
+                    { id: "dea_s2", name: "Dark Sacrement", type: ".s2 Active", flavor: "minion frenzy. Poison (Corpse Explosion) Damage", cost: "Cost: 20 Mana", getDesc: (r) => `ability damage <span class="val-hl">+${r * 2}%</span> to all active summons for 8s; summon attack speed <span class="val-hl">${(r * +2) > 0 ? "+" : ""}${r * +2}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Corpse Explosion", capDesc: "Targeting a specific undead minion causes it to detonate, dealing heavy AoE Poison damage based on its remaining HP.", rank: 0 },
+                    { id: "dea_s3", name: "Curse of Decay", type: ".s3 Active", flavor: "AoE debuff", cost: "Cost: 15 Mana", getDesc: (r) => `radius +0.1 per rank (max +1); creature resistance reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span>; creature HP regen reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Life Leeching", capDesc: "Cursed creatures heal attacking undead minions for 10% of the damage dealt.", rank: 0 },
+                    { id: "dea_p1", name: "Necrotic Potency", type: "Passive", flavor: "spell power", cost: "", getDesc: (r) => `spell damage vs creatures increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max 11%).`, capName: "Death's Reach", capDesc: "15% chance on spell hit to reduce creature STR by 10 for 5s (ICD per target 10s).", rank: 0 },
+                    { id: "dea_p2", name: "Essence Harvest", type: "Passive", flavor: "mana on kill", cost: "", getDesc: (r) => `on creature kill, restore mana equal to 1 + rank (scales each rank, max 12 mana at rank 11).`, capName: "Soul Overflow", capDesc: "If mana is full when Essence Harvest triggers, the excess becomes a temporary HP shield for 10s.", rank: 0 },
+                    { id: "dea_p3", name: "Staff Mastery", type: "Passive", flavor: "casting under pressure", cost: "", getDesc: (r) => `chance to avoid cast disruption from creature hits increases by <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> (PvM only, max 22%).`, capName: "Arcane Deflection", capDesc: "10% chance to reflect creature spells back at the caster.", rank: 0 }
                 ]
             },
             {
                 name: "Marksman", archetype: "bows",
                 skills: [
-                    { id: "mar_s1", name: "Piercing Shot", type: ".s1 Active", getDesc: (r) => `line shot. Physical (Scales with Weapon Tier) Damage. Cost: 15 Stamina. line length +1 tile at odd ranks (max 8 tiles at rank 11); ability damage <span class="val-hl">+${r * 2}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Pinning Shot", capDesc: "Creatures hit by the line shot are rooted in place for 2s. Hitting 3 or more creatures instantly refunds 3s of cooldown.", rank: 0 },
-                    { id: "mar_s2", name: "Rain of Arrows", type: ".s2 Active", getDesc: (r) => `frontal cone barrage. Physical (Scales with Weapon Tier) Damage. Cost: 25 Stamina. cone range +1 tile per rank (base 2 tiles, max 12 tiles at rank 11); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Channel fires over 2 seconds; damage per tick normalised across the duration.`, capName: "Barrage", capDesc: "Fires two waves, second landing 0.5s after the first. Any active Set Traps inside the cone are detonated by the arrows landing on them.", rank: 0 },
-                    { id: "mar_s3", name: "Set Trap", type: ".s3 Active", getDesc: (r) => `floor trap placement. Cost: 15 Stamina. trap ability damage <span class="val-hl">+${r * 2}%</span>; simultaneous trap cap increases at ranks 5 and 9 (2 traps at rank 1, 3 at rank 5, 4 at rank 9); trap types cycle sequentially unlocking progressively (Dart, Poison, Explosion at rank 1; Faction Gas and Faction Explosion at rank 8; Faction Saw and Faction Spike at rank 11); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Triggering creature is taunted toward the trap for 3-4s.`, capName: "Master Trapper", capDesc: "Trap cap raises to 6 simultaneous traps. Each trap triggers twice before being consumed (second trigger at 50% damage). Each trap trigger reduces Set Trap cooldown by 1s.", rank: 0 },
-                    { id: "mar_p1", name: "Eagle Eye", type: "Passive", getDesc: (r) => `range mastery. +1 tile max bow range at even ranks (max +5 tiles at rank 10); stamina cost of all Marksman actives reduced by 1 per rank (max -11 stamina at rank 11).`, capName: "Keen Eye", capDesc: "Critical strikes restore 8% of the damage dealt as HP. Applies to all crit sources including auto-attacks and trap detonation crits.", rank: 0 },
-                    { id: "mar_p2", name: "Precise Strikes", type: "Passive", getDesc: (r) => `critical mastery. critical strike chance vs creatures increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max 11% at rank 11).`, capName: "Executioner", capDesc: "Targets below 20% HP take +50% damage from critical strikes by the Marksman.", rank: 0 },
-                    { id: "mar_p3", name: "Hunter's Mark", type: "Passive", getDesc: (r) => `replaces Fletcher's Luck. first arrow always marks the target automatically; marked creatures take increased damage from all sources scaling with rank (<span class="val-hl">+${Math.floor(r * 1 / 2)}%</span>, max +6% at rank 12); mark duration +1s per rank (base 5s, max 15s at rank 11); flat 5% ammo save chance retained as a background passive at all ranks.`, capName: "Blood Trail", capDesc: "When a marked creature dies, or when a Set Trap triggers on a marked creature, the mark instantly spreads to all creatures within 3 tiles for the full duration.", rank: 0 }
+                    { id: "mar_s1", name: "Piercing Shot", type: ".s1 Active", flavor: "line shot. Physical (Scales with Weapon Tier) Damage", cost: "Cost: 15 Stamina", getDesc: (r) => `line length +1 tile at odd ranks (max 8 tiles at rank 11); ability damage <span class="val-hl">+${r * 2}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Pinning Shot", capDesc: "Creatures hit by the line shot are rooted in place for 2s. Hitting 3 or more creatures instantly refunds 3s of cooldown.", rank: 0 },
+                    { id: "mar_s2", name: "Rain of Arrows", type: ".s2 Active", flavor: "frontal cone barrage. Physical (Scales with Weapon Tier) Damage", cost: "Cost: 25 Stamina", getDesc: (r) => `cone range +1 tile per rank (base 2 tiles, max 12 tiles at rank 11); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Channel fires over 2 seconds; damage per tick normalised across the duration.`, capName: "Barrage", capDesc: "Fires two waves, second landing 0.5s after the first. Any active Set Traps inside the cone are detonated by the arrows landing on them.", rank: 0 },
+                    { id: "mar_s3", name: "Set Trap", type: ".s3 Active", flavor: "floor trap placement", cost: "Cost: 15 Stamina", getDesc: (r) => `trap ability damage <span class="val-hl">+${r * 2}%</span>; simultaneous trap cap increases at ranks 5 and 9 (2 traps at rank 1, 3 at rank 5, 4 at rank 9); trap types cycle sequentially unlocking progressively (Dart, Poison, Explosion at rank 1; Faction Gas and Faction Explosion at rank 8; Faction Saw and Faction Spike at rank 11); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Triggering creature is taunted toward the trap for 3-4s.`, capName: "Master Trapper", capDesc: "Trap cap raises to 6 simultaneous traps. Each trap triggers twice before being consumed (second trigger at 50% damage). Each trap trigger reduces Set Trap cooldown by 1s.", rank: 0 },
+                    { id: "mar_p1", name: "Eagle Eye", type: "Passive", flavor: "range mastery", cost: "", getDesc: (r) => `+1 tile max bow range at even ranks (max +5 tiles at rank 10); stamina cost of all Marksman actives reduced by 1 per rank (max -11 stamina at rank 11).`, capName: "Keen Eye", capDesc: "Critical strikes restore 8% of the damage dealt as HP. Applies to all crit sources including auto-attacks and trap detonation crits.", rank: 0 },
+                    { id: "mar_p2", name: "Precise Strikes", type: "Passive", flavor: "critical mastery", cost: "", getDesc: (r) => `critical strike chance vs creatures increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max 11% at rank 11).`, capName: "Executioner", capDesc: "Targets below 20% HP take +50% damage from critical strikes by the Marksman.", rank: 0 },
+                    { id: "mar_p3", name: "Hunter's Mark", type: "Passive", flavor: "replaces Fletcher's Luck", cost: "", getDesc: (r) => `first arrow always marks the target automatically; marked creatures take increased damage from all sources scaling with rank (<span class="val-hl">+${Math.floor(r * 1 / 2)}%</span>, max +6% at rank 12); mark duration +1s per rank (base 5s, max 15s at rank 11); flat 5% ammo save chance retained as a background passive at all ranks.`, capName: "Blood Trail", capDesc: "When a marked creature dies, or when a Set Trap triggers on a marked creature, the mark instantly spreads to all creatures within 3 tiles for the full duration.", rank: 0 }
                 ]
             },
             {
                 name: "Templar", archetype: "1H + shield",
                 skills: [
-                    { id: "tem_s1", name: "Holy Shield", type: ".s1 Active", getDesc: (r) => `block charges + Judgment fuel. Cost: 15 Stamina. grants block charges (1 at rank 1, +1 at ranks 4/7/10, max 4 charges); charge duration +1s per rank; CD <span class="val-hl">${(19.5 - (r * 0.5)).toFixed(1)}s</span>. Charges can be consumed by Judgment for amplified damage instead of blocking incoming hits (1 charge = heavy, 2 = devastating, 3 = maximum burst).`, capName: "Aegis", capDesc: "Block charges never expire until consumed. When a charge is consumed blocking a hit, all party members within 5 tiles gain a 50 HP absorption shield for 5s.", rank: 0 },
-                    { id: "tem_s2", name: "Judgment", type: ".s2 Active", getDesc: (r) => `holy strike — charge-scaled. Energy (Holy) Damage. Cost: 20 Mana. ability damage <span class="val-hl">+${r * 4}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Consuming Holy Shield charges on cast multiplies damage output (0 charges = base, 1 = heavy, 2 = devastating, 3 = maximum burst). Karma scaling removed.`, capName: "Condemnation", capDesc: "Judgment applies a debuff causing the target to take +10% damage from all sources for 8s. Each successful parry reduces Judgment cooldown by 1s.", rank: 0 },
-                    { id: "tem_s3", name: "Provoke", type: ".s3 Active", getDesc: (r) => `passive thorns + AoE taunt. Cost: 10 Stamina. passive thorns are always active — reflects <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> of incoming creature attack damage back to the attacker at all times; active: forces all creatures within 4 tiles to target you; taunt duration +0.5s per rank; during the taunt window passive thorns are tripled; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Martyr's Wrath", capDesc: "When the taunt window expires, all accumulated reflected damage detonates as a single burst hitting every taunted creature simultaneously.", rank: 0 },
-                    { id: "tem_p1", name: "Guardian's Zeal", type: "Passive", getDesc: (r) => `shield mastery. parry chance increases by <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> while a shield is equipped (max 22%).`, capName: "Shield Slam", capDesc: "On a successful parry vs a creature, 20% chance to stun it for 1s (ICD 6s per attacker).", rank: 0 },
-                    { id: "tem_p2", name: "Retribution", type: "Passive", getDesc: (r) => `holy retaliation. <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> chance when hit by a creature to deal holy retaliation damage back to the attacker.`, capName: "Holy Chain", capDesc: "Retribution hits can arc to a second nearby creature for 50% of the retaliation damage.", rank: 0 },
-                    { id: "tem_p3", name: "Aura of Devotion", type: "Passive", getDesc: (r) => `support aura + magic resilience. allies within 5 tiles gain bonus stamina regen in PvM (<span class="val-hl">+${Math.floor(r * 1 / 3)}</span> stam regen, max +3 at rank 9+); Templar passively reduces incoming magic damage by <span class="val-hl">+${Math.floor(r * 1 / 3)}%</span> (max 4% at rank 11).`, capName: "Divine Grace", capDesc: "Allies affected have 10% chance not to spend stamina on weapon specials (PvM only). Templar magic damage reduction increases to 6%.", rank: 0 }
+                    { id: "tem_s1", name: "Holy Shield", type: ".s1 Active", flavor: "block charges + Judgment fuel", cost: "Cost: 15 Stamina", getDesc: (r) => `grants block charges (1 at rank 1, +1 at ranks 4/7/10, max 4 charges); charge duration +1s per rank; CD <span class="val-hl">${(19.5 - (r * 0.5)).toFixed(1)}s</span>. Charges can be consumed by Judgment for amplified damage instead of blocking incoming hits (1 charge = heavy, 2 = devastating, 3 = maximum burst).`, capName: "Aegis", capDesc: "Block charges never expire until consumed. When a charge is consumed blocking a hit, all party members within 5 tiles gain a 50 HP absorption shield for 5s.", rank: 0 },
+                    { id: "tem_s2", name: "Judgment", type: ".s2 Active", flavor: "holy strike — charge-scaled. Energy (Holy) Damage", cost: "Cost: 20 Mana", getDesc: (r) => `ability damage <span class="val-hl">+${r * 4}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Consuming Holy Shield charges on cast multiplies damage output (0 charges = base, 1 = heavy, 2 = devastating, 3 = maximum burst). Karma scaling removed.`, capName: "Condemnation", capDesc: "Judgment applies a debuff causing the target to take +10% damage from all sources for 8s. Each successful parry reduces Judgment cooldown by 1s.", rank: 0 },
+                    { id: "tem_s3", name: "Provoke", type: ".s3 Active", flavor: "passive thorns + AoE taunt", cost: "Cost: 10 Stamina", getDesc: (r) => `passive thorns are always active — reflects <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> of incoming creature attack damage back to the attacker at all times; active: forces all creatures within 4 tiles to target you; taunt duration +0.5s per rank; during the taunt window passive thorns are tripled; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Martyr's Wrath", capDesc: "When the taunt window expires, all accumulated reflected damage detonates as a single burst hitting every taunted creature simultaneously.", rank: 0 },
+                    { id: "tem_p1", name: "Guardian's Zeal", type: "Passive", flavor: "shield mastery", cost: "", getDesc: (r) => `parry chance increases by <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> while a shield is equipped (max 22%).`, capName: "Shield Slam", capDesc: "On a successful parry vs a creature, 20% chance to stun it for 1s (ICD 6s per attacker).", rank: 0 },
+                    { id: "tem_p2", name: "Retribution", type: "Passive", flavor: "holy retaliation", cost: "", getDesc: (r) => `<span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> chance when hit by a creature to deal holy retaliation damage back to the attacker.`, capName: "Holy Chain", capDesc: "Retribution hits can arc to a second nearby creature for 50% of the retaliation damage.", rank: 0 },
+                    { id: "tem_p3", name: "Aura of Devotion", type: "Passive", flavor: "support aura + magic resilience", cost: "", getDesc: (r) => `allies within 5 tiles gain bonus stamina regen in PvM (<span class="val-hl">+${Math.floor(r * 1 / 3)}</span> stam regen, max +3 at rank 9+); Templar passively reduces incoming magic damage by <span class="val-hl">+${Math.floor(r * 1 / 3)}%</span> (max 4% at rank 11).`, capName: "Divine Grace", capDesc: "Allies affected have 10% chance not to spend stamina on weapon specials (PvM only). Templar magic damage reduction increases to 6%.", rank: 0 }
                 ]
             }
         ];
@@ -716,6 +761,13 @@
                 } else if (skill.rank === 11 && available >= 4) {
                     skill.rank = 12;
                     playSound('lock');
+                    // Add flash animation trigger
+                    const card = document.querySelector(`[data-skill-id="${skillId}"]`);
+                    if (card) {
+                        card.classList.remove('max-flash');
+                        void card.offsetWidth; // Force reflow
+                        card.classList.add('max-flash');
+                    }
                 }
             } else {
                 if (skill.rank === 12) {
@@ -747,16 +799,23 @@
                 const isActive = skill.rank > 0;
                 const canAdd = (skill.rank < 11 && (MAX_POINTS - spent) >= 1) || (skill.rank === 11 && (MAX_POINTS - spent) >= 4);
                 const card = document.createElement('div');
-                card.className = 'skill-card';
+                card.className = `skill-card ${isMax ? 'max-flash-static' : ''}`;
+                card.setAttribute('data-skill-id', skill.id);
                 card.innerHTML = `
                     <div class="skill-header">
-                        <div class="skill-name">${skill.name}</div>
+                        <div class="skill-name">
+                            ${skill.name}
+                            <div class="skill-flavor-top">${skill.flavor || ''}</div>
+                        </div>
                         <div class="rank-badge ${isMax ? 'max' : (isActive ? 'active' : '')}">RANK ${skill.rank} / 12</div>
                     </div>
                     <div class="rank-controls">
                         <button class="control-btn" onclick="updateRank('${skill.id}', -1)" ${skill.rank === 0 ? 'disabled' : ''}>-</button>
                         <button class="control-btn" onclick="updateRank('${skill.id}', 1)" ${!canAdd ? 'disabled' : ''}>+</button>
-                        <div style="margin-left:auto; font-size: 0.7rem; font-weight:900; color:var(--accent-blood);">${skill.type}</div>
+                        <div class="skill-metadata-right">
+                            <div class="skill-type-tag">${skill.type}</div>
+                            <div class="skill-cost-tag">${skill.cost || ''}</div>
+                        </div>
                     </div>
                     <div class="skill-desc">${skill.getDesc(Math.min(skill.rank, 11))}</div>
                     <div class="capstone-box ${isMax ? 'unlocked' : ''}">
