@@ -785,6 +785,7 @@
             osc.stop(now + 0.1);
         }
 
+        let flashSkillId = null;
         function updateRank(skillId, delta) {
             const skill = classes[activeClassIndex].skills.find(s => s.id === skillId);
             const totalSpent = getPointsSpent();
@@ -797,25 +798,8 @@
                 } else if (skill.rank === 11 && available >= 4) {
                     skill.rank = 12;
                     playSound('lock');
-                    
-                    // Trigger EXTREME flash animation
-                    const card = document.querySelector(`[data-skill-id="${skillId}"]`);
-                    console.log('🔥 FLASH TRIGGERED FOR SKILL:', skillId, 'Card found:', !!card);
-                    if (card) {
-                        console.log('✨ Adding max-flash class to:', card);
-                        card.classList.remove('max-flash');
-                        void card.offsetWidth; // Force reflow
-                        card.classList.add('max-flash');
-                        console.log('✨ max-flash class added. Classes:', card.className);
-                        
-                        // Remove class after animation
-                        setTimeout(() => {
-                            card.classList.remove('max-flash');
-                            console.log('✨ max-flash class removed after animation');
-                        }, 2000);
-                    } else {
-                        console.error('❌ Card not found for skill:', skillId);
-                    }
+                    flashSkillId = skillId;
+                    setTimeout(() => { flashSkillId = null; }, 2000);
                 }
             } else {
                 if (skill.rank === 12) {
@@ -844,10 +828,11 @@
 
             classes[activeClassIndex].skills.forEach(skill => {
                 const isMax = skill.rank === 12;
+                const isFlashing = skill.id === flashSkillId;
                 const isActive = skill.rank > 0;
                 const canAdd = (skill.rank < 11 && (MAX_POINTS - spent) >= 1) || (skill.rank === 11 && (MAX_POINTS - spent) >= 4);
                 const card = document.createElement('div');
-                card.className = `skill-card ${isMax ? 'max-flash-static' : ''}`;
+                card.className = `skill-card ${isMax ? 'max-flash-static' : ''} ${isFlashing ? 'max-flash' : ''}`;
                 card.setAttribute('data-skill-id', skill.id);
                 card.innerHTML = `
                     <div class="skill-header">
