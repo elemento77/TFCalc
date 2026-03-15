@@ -328,8 +328,9 @@
         .skill-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 25px;
+            gap: 15px;
         }
 
         .skill-name {
@@ -339,6 +340,9 @@
             color: #fff;
             display: flex;
             flex-direction: column;
+            flex: 1;
+            min-width: 0;
+            word-break: break-word;
         }
 
         .skill-flavor-top {
@@ -360,6 +364,8 @@
             font-weight: 800;
             font-size: 0.9rem;
             color: var(--accent-blood);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .rank-badge.active {
@@ -798,10 +804,15 @@
                 } else if (skill.rank === 11 && available >= 4) {
                     skill.rank = 12;
                     playSound('lock');
+                    // Only set flash for this specific skill reaching 12/12
                     flashSkillId = skillId;
                     setTimeout(() => { flashSkillId = null; }, 1500);
                 }
             } else {
+                // Clear flash state when removing points
+                if (flashSkillId === skillId) {
+                    flashSkillId = null;
+                }
                 if (skill.rank === 12) {
                     skill.rank = 11;
                     playSound('sub');
