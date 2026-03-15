@@ -274,8 +274,8 @@
             z-index: 1;
         }
 
-        /* Flash Layer - Pure Image */
-        .skill-card::before {
+        /* Flash Layer - Freed from resting state */
+        .skill-card::after {
             content: "";
             position: absolute;
             top: 0;
@@ -286,19 +286,31 @@
             background-size: cover;
             background-position: center;
             opacity: 0;
-            z-index: -1;
+            z-index: 1;
             pointer-events: none;
-            transition: opacity 0.5s ease;
+            border-radius: 28px;
+            transition: opacity 0.3s ease;
         }
 
-        .skill-card.max-flash::before {
-            animation: cardImageFlash 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        .skill-card.max-flash::after {
+            animation: cardFreedFlash 1.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        @keyframes cardImageFlash {
-            0% { opacity: 0; transform: scale(1); }
-            30% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 0; transform: scale(1); }
+        @keyframes cardFreedFlash {
+            0% { opacity: 0; filter: brightness(1) contrast(1); transform: scale(1); }
+            15% { opacity: 1; filter: brightness(2) contrast(1.2); transform: scale(1.02); }
+            100% { opacity: 0; filter: brightness(1) contrast(1); transform: scale(1); }
+        }
+
+        /* Subtle glow on the card itself during flash */
+        .skill-card.max-flash {
+            animation: cardGlowBurst 1.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        @keyframes cardGlowBurst {
+            0% { border-color: var(--card-border); box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+            15% { border-color: rgba(255, 255, 255, 0.6); box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); }
+            100% { border-color: var(--card-border); box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
         }
 
         /* Ensure content stays above the flash layer */
@@ -316,8 +328,9 @@
         .skill-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 25px;
+            gap: 15px;
         }
 
         .skill-name {
@@ -327,6 +340,9 @@
             color: #fff;
             display: flex;
             flex-direction: column;
+            flex: 1;
+            min-width: 0;
+            word-break: break-word;
         }
 
         .skill-flavor-top {
@@ -348,6 +364,8 @@
             font-weight: 800;
             font-size: 0.9rem;
             color: var(--accent-blood);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .rank-badge.active {
@@ -773,6 +791,7 @@
             osc.stop(now + 0.1);
         }
 
+        let flashSkillId = null;
         function updateRank(skillId, delta) {
             const skill = classes[activeClassIndex].skills.find(s => s.id === skillId);
             const totalSpent = getPointsSpent();
@@ -785,15 +804,15 @@
                 } else if (skill.rank === 11 && available >= 4) {
                     skill.rank = 12;
                     playSound('lock');
-                    // Add flash animation trigger
-                    const card = document.querySelector(`[data-skill-id="${skillId}"]`);
-                    if (card) {
-                        card.classList.remove('max-flash');
-                        void card.offsetWidth; // Force reflow
-                        card.classList.add('max-flash');
-                    }
+                    // Only set flash for this specific skill reaching 12/12
+                    flashSkillId = skillId;
+                    setTimeout(() => { flashSkillId = null; }, 1500);
                 }
             } else {
+                // Clear flash state when removing points
+                if (flashSkillId === skillId) {
+                    flashSkillId = null;
+                }
                 if (skill.rank === 12) {
                     skill.rank = 11;
                     playSound('sub');
@@ -820,10 +839,11 @@
 
             classes[activeClassIndex].skills.forEach(skill => {
                 const isMax = skill.rank === 12;
+                const isFlashing = skill.id === flashSkillId;
                 const isActive = skill.rank > 0;
                 const canAdd = (skill.rank < 11 && (MAX_POINTS - spent) >= 1) || (skill.rank === 11 && (MAX_POINTS - spent) >= 4);
                 const card = document.createElement('div');
-                card.className = `skill-card ${isMax ? 'max-flash-static' : ''}`;
+                card.className = `skill-card ${isMax ? 'max-flash-static' : ''} ${isFlashing ? 'max-flash' : ''}`;
                 card.setAttribute('data-skill-id', skill.id);
                 card.innerHTML = `
                     <div class="skill-header">
