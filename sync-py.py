@@ -37,17 +37,22 @@ def parse_skill_specs():
                     leg_breakthrough = line.split('**:')[1].strip()
                 elif ':' in line and any(w in line for w in ["Swords", "Fencing", "Macing", "Archery"]):
                     parts = line.split(':')
-                    w_name = parts[0].strip(' -*')
+                    w_name = parts[0].strip(' -*').strip()
                     w_effect = parts[1].strip()
                     weapon_specifics[w_name] = w_effect
             
             for w in weapons:
                 w_key = w.replace('manship', '') # Map Swordsmanship -> Swords
                 effect = weapon_specifics.get(w_key, "")
-                gm_desc = f"10% chance for {effect} (at 100.0)."
-                leg_desc = leg_breakthrough
+                gm_desc = f"Up to a 10% chance (at 100.0) for {effect} on weapon hit."
+                
+                # Fix macefight disclaimer: remove the Macing-specific part for others
                 if w == "Macing":
-                    leg_desc = "Crit deals +50% Physical dmg (Shatter)."
+                    # For Macing, we keep the macing specific part and format it nicely
+                    leg_desc = leg_breakthrough.replace('For Macing (**Shatter**), ', '(**Shatter**): ')
+                else:
+                    # For others, remove the Macing part
+                    leg_desc = re.sub(r' For Macing.*?burst\.', '', leg_breakthrough).strip()
                 
                 skill_data.append({
                     "name": w,
@@ -71,6 +76,8 @@ def parse_skill_specs():
                 "leg": leg
             })
             
+    # Sort alphabetically
+    skill_data.sort(key=lambda x: x['name'])
     return skill_data
 
 def parse_classes():
@@ -78,7 +85,6 @@ def parse_classes():
         content = f.read()
         
     classes = []
-    # Split by class sections (e.g., ### 3.1 Berzerker)
     class_sections = re.split(r'### \d\.\d\s+', content)[1:]
     
     for section in class_sections:
@@ -92,7 +98,6 @@ def parse_classes():
         class_obj = {"name": class_name, "archetype": arch_type, "skills": []}
         id_prefix = class_name.lower()[:3]
         
-        # Split section by skills (starting with - `.s` or - `Name`)
         skill_blocks = section.split('\n- ')[1:]
         p_idx = 1
         
@@ -102,28 +107,41 @@ def parse_classes():
                 continue
             first_line = b_lines[0]
             
+            # Extract flavor from name line
+            flavor = ""
+            flavor_match = re.search(r'\((.*?)\)', first_line)
+            if flavor_match:
+                flavor = flavor_match.group(1)
+
+            cost = ""
+            dmg_type = ""
+            rank_desc = ""
+            cap_name = ""
+            cap_desc = ""
+            
+            for l in b_lines:
+                clean = l.strip(' -*')
+                if clean.startswith('Cost:'):
+                    cost = clean.replace('Cost:', '').strip()
+                elif clean.startswith('Damage Type:'):
+                    dmg_type = clean.replace('Damage Type:', '').strip()
+                elif clean.startswith('Rank 1-11:'):
+                    rank_desc = clean.replace('Rank 1-11:', '').strip()
+                elif clean.startswith('Capstone'):
+                    c_match = re.search(r'Capstone \((.*?)\): (.*)', clean)
+                    if c_match:
+                        cap_name = c_match.group(1)
+                        cap_desc = c_match.group(2)
+            
             # Active Skill
             if first_line.startswith('`.s'):
                 s_match = re.search(r'`\.(s\d) (.*?)`', first_line)
                 if not s_match:
                     continue
-                    
                 s_id = s_match.group(1)
                 name = s_match.group(2)
-                rank_desc = ""
-                cap_name = ""
-                cap_desc = ""
                 
-                for l in b_lines:
-                    if l.strip(' -*').startswith('Rank 1-11:'):
-                        rank_desc = l.strip(' -*').replace('Rank 1-11:', '').strip()
-                    elif l.strip(' -*').startswith('Capstone'):
-                        c_match = re.search(r'Capstone \((.*?)\): (.*)', l.strip(' -*'))
-                        if c_match:
-                            cap_name = c_match.group(1)
-                            cap_desc = c_match.group(2)
-                
-                # Extraction values for JS generation
+                # Extraction values for math
                 dmg_bonus_match = re.search(r'ability damage \+(\d+)% per rank', rank_desc, re.I)
                 cd_match = re.search(r'cooldown -([\d.]+)s per rank \(base ([\d.]+)s', rank_desc, re.I)
                 
@@ -131,10 +149,13 @@ def parse_classes():
                     "id": f"{id_prefix}_{s_id}",
                     "name": name,
                     "type": f".{s_id} Active",
+                    "flavor": flavor,
+                    "cost": cost,
+                    "dmgType": dmg_type,
                     "rankDesc": rank_desc,
-                    "dmgBonus": dmg_bonus_match.group(1) if dmg_bonus_match else "3",
-                    "cdBase": cd_match.group(2) if cd_match else "15",
-                    "cdStep": cd_match.group(1) if cd_match else "0.5",
+                    "dmgBonus": dmg_bonus_match.group(1) if dmg_bonus_match else None,
+                    "cdBase": cd_match.group(2) if cd_match else None,
+                    "cdStep": cd_match.group(1) if cd_match else None,
                     "capName": cap_name,
                     "capDesc": cap_desc
                 })
@@ -143,25 +164,12 @@ def parse_classes():
                 p_match = re.search(r'`(.*?)`', first_line)
                 if not p_match:
                     continue
-                    
                 name = p_match.group(1)
-                rank_desc = ""
-                cap_name = ""
-                cap_desc = ""
-                
-                for l in b_lines:
-                    if l.strip(' -*').startswith('Rank 1-11:'):
-                        rank_desc = l.strip(' -*').replace('Rank 1-11:', '').strip()
-                    elif l.strip(' -*').startswith('Capstone'):
-                        c_match = re.search(r'Capstone \((.*?)\): (.*)', l.strip(' -*'))
-                        if c_match:
-                            cap_name = c_match.group(1)
-                            cap_desc = c_match.group(2)
-                            
                 class_obj["skills"].append({
                     "id": f"{id_prefix}_p{p_idx}",
                     "name": name,
                     "type": "Passive",
+                    "flavor": flavor,
                     "rankDesc": rank_desc,
                     "capName": cap_name,
                     "capDesc": cap_desc
@@ -169,7 +177,9 @@ def parse_classes():
                 p_idx += 1
                 
         classes.append(class_obj)
-        
+    
+    # Sort classes alphabetically
+    classes.sort(key=lambda x: x['name'])
     return classes
 
 def generate_classes_js(classes):
@@ -179,18 +189,50 @@ def generate_classes_js(classes):
         js += f'                name: "{c["name"]}", archetype: "{c["archetype"]}",\n'
         js += "                skills: [\n"
         for s_idx, s in enumerate(c["skills"]):
-            get_desc_str = ""
+            # Build flavored description
+            parts = []
+            if s.get("flavor"): parts.append(s["flavor"])
+            if s.get("dmgType"): parts.append(f"{s['dmgType']} Damage")
+            if s.get("cost"): parts.append(f"Cost: {s['cost']}")
+            
+            flavor_line = ". ".join(parts)
+            if flavor_line: flavor_line += ". "
+            
+            # Processing rankDesc for math
             desc = s["rankDesc"].replace('`', '\\`').replace('"', '\\"')
             
-            if "Active" in s["type"]:
-                desc_js = desc
-                desc_js = re.sub(r'ability damage \+(\d+)% per rank', f'Dmg <span class="val-hl">+${{r * {s["dmgBonus"]}}}%</span>', desc_js, flags=re.I)
-                desc_js = re.sub(r'cooldown -([\d.]+)s per rank \(base ([\d.]+)s.*?\)', f'CD <span class="val-hl">${{({s["cdBase"]} - (r * {s["cdStep"]})).toFixed(1)}}s</span>', desc_js, flags=re.I)
-                desc_js = re.sub(r'(\d+)% per rank', r'<span class="val-hl">${r * \1}%</span>', desc_js)
-                get_desc_str = f"(r) => `{desc_js}`"
-            else:
-                desc_js = re.sub(r'(\d+)% per rank', r'<span class="val-hl">${r * \1}%</span>', desc)
-                get_desc_str = f"(r) => `{desc_js}`"
+            # Cooldown logic
+            if s.get("cdBase"):
+                desc = re.sub(r'cooldown -[\d.]+s per rank \(base ([\d.]+)s.*?\)', 
+                              f'CD <span class="val-hl">${{({s["cdBase"]} - (r * {s["cdStep"]})).toFixed(1)}}s</span>', 
+                              desc, flags=re.I)
+            
+            # Ability Damage logic
+            if s.get("dmgBonus"):
+                 desc = re.sub(r'ability damage \+\d+% per rank', 
+                               f'ability damage <span class="val-hl">+${{r * {s["dmgBonus"]}}}%</span>', 
+                               desc, flags=re.I)
+
+            # Flexible scaling replacements for any "[num]% per rank" or "[num] unit per rank"
+            # Replace "+X% per rank" -> "+${r * X}%"
+            desc = re.sub(r'([+-]?[\d.]+)% per rank', r'<span class="val-hl">${(r * \1) > 0 ? "+" : ""}${r * \1}%</span>', desc)
+            # Replace "X [unit] per rank" -> "${r * X} unit" 
+            # This handles tiles, stacks, charges, seconds, etc.
+            # Use toFixed(1) if it's a float
+            def replacer(match):
+                num = match.group(1)
+                unit = match.group(2)
+                if '.' in num:
+                     return f'<span class="val-hl">${{(r * {num}).toFixed(1)}}</span> {unit}'
+                return f'<span class="val-hl">${{r * {num}}}</span> {unit}'
+            
+            desc = re.sub(r'([+-]?[\d.]+) (tiles|s|stacks|charge|mana|HP|stamina)s? per rank', replacer, desc)
+            
+            # Special case for "1% per 2 ranks" or similar
+            desc = re.sub(r'(\d+)% per (\d+) ranks', r'<span class="val-hl">+${Math.floor(r * \1 / \2)}%</span>', desc)
+            desc = re.sub(r'\+(\d+) stam regen per (\d+) ranks', r'<span class="val-hl">+${Math.floor(r * \1 / \2)}</span> stam regen', desc)
+
+            get_desc_str = f"(r) => `{flavor_line}{desc}`"
                 
             js += f'                    {{ id: "{s["id"]}", name: "{s["name"]}", type: "{s["type"]}", getDesc: {get_desc_str}, capName: "{s["capName"]}", capDesc: "{s["capDesc"].replace('"', '\\"')}", rank: 0 }}'
             if s_idx < len(c["skills"]) - 1:
