@@ -274,7 +274,7 @@
             z-index: 1;
         }
 
-        /* Flash Layer - EXTREME BONKERS VERSION */
+        /* Flash Layer - Freed from resting state */
         .skill-card::after {
             content: "";
             position: absolute;
@@ -282,35 +282,35 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0);
-            z-index: 999;
+            background-image: url('Assets/skill-card-bg-v2.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            z-index: 1;
             pointer-events: none;
             border-radius: 28px;
+            transition: opacity 0.3s ease;
         }
 
         .skill-card.max-flash::after {
-            animation: extremeFlash 2s ease-out;
+            animation: cardFreedFlash 1.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        @keyframes extremeFlash {
-            0% { background: rgba(255, 255, 255, 0); box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0); }
-            10% { background: rgba(255, 255, 255, 0.8); box-shadow: inset 0 0 40px 10px rgba(255, 255, 255, 0.9), 0 0 60px 20px rgba(255, 255, 255, 0.6); transform: scale(1.05); }
-            25% { background: rgba(255, 255, 255, 0.6); box-shadow: inset 0 0 30px 8px rgba(255, 255, 255, 0.7), 0 0 40px 15px rgba(255, 255, 255, 0.4); transform: scale(1.08); }
-            50% { background: rgba(255, 255, 255, 0.3); box-shadow: inset 0 0 20px 5px rgba(255, 255, 255, 0.4), 0 0 20px 10px rgba(255, 255, 255, 0.2); transform: scale(1.03); }
-            100% { background: rgba(255, 255, 255, 0); box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0); transform: scale(1); }
+        @keyframes cardFreedFlash {
+            0% { opacity: 0; filter: brightness(1) contrast(1); transform: scale(1); }
+            15% { opacity: 1; filter: brightness(2) contrast(1.2); transform: scale(1.02); }
+            100% { opacity: 0; filter: brightness(1) contrast(1); transform: scale(1); }
         }
 
-        /* Also flash the card itself */
+        /* Subtle glow on the card itself during flash */
         .skill-card.max-flash {
-            animation: cardBodyFlash 2s ease-out;
+            animation: cardGlowBurst 1.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        @keyframes cardBodyFlash {
-            0% { filter: brightness(1) drop-shadow(0 0 0px rgba(255, 255, 255, 0)); }
-            10% { filter: brightness(2) drop-shadow(0 0 40px rgba(255, 255, 255, 0.8)); }
-            25% { filter: brightness(1.8) drop-shadow(0 0 30px rgba(255, 255, 255, 0.6)); }
-            50% { filter: brightness(1.3) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)); }
-            100% { filter: brightness(1) drop-shadow(0 0 0px rgba(255, 255, 255, 0)); }
+        @keyframes cardGlowBurst {
+            0% { border-color: var(--card-border); box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+            15% { border-color: rgba(255, 255, 255, 0.6); box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); }
+            100% { border-color: var(--card-border); box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
         }
 
         /* Ensure content stays above the flash layer */
@@ -799,7 +799,7 @@
                     skill.rank = 12;
                     playSound('lock');
                     flashSkillId = skillId;
-                    setTimeout(() => { flashSkillId = null; }, 2000);
+                    setTimeout(() => { flashSkillId = null; }, 1500);
                 }
             } else {
                 if (skill.rank === 12) {
