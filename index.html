@@ -292,13 +292,13 @@
         }
 
         .skill-card.max-flash::before {
-            animation: cardImageFlash 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+            animation: cardImageFlash 1.2s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
         @keyframes cardImageFlash {
-            0% { opacity: 0; transform: scale(1); }
-            30% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 0; transform: scale(1); }
+            0% { opacity: 0; transform: scale(1); filter: brightness(1); }
+            20% { opacity: 1; transform: scale(1.02); filter: brightness(1.5); }
+            100% { opacity: 0; transform: scale(1); filter: brightness(1); }
         }
 
         /* Ensure content stays above the flash layer */
@@ -785,12 +785,18 @@
                 } else if (skill.rank === 11 && available >= 4) {
                     skill.rank = 12;
                     playSound('lock');
-                    // Add flash animation trigger
+                    
+                    // Trigger flash animation
                     const card = document.querySelector(`[data-skill-id="${skillId}"]`);
                     if (card) {
                         card.classList.remove('max-flash');
                         void card.offsetWidth; // Force reflow
                         card.classList.add('max-flash');
+                        
+                        // Optional: remove class after animation to keep DOM clean
+                        setTimeout(() => {
+                            card.classList.remove('max-flash');
+                        }, 1200);
                     }
                 }
             } else {
