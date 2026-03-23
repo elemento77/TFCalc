@@ -21,7 +21,7 @@ def parse_skill_specs():
         if not lines:
             continue
             
-        name_line = lines[0]
+        name_line = lines[0].split(' - ')[0].strip()
         
         # Special handling for Weapon Skills grouping
         if "Weapon Skills" in name_line:
@@ -64,10 +64,12 @@ def parse_skill_specs():
         gm = ""
         leg = ""
         for line in lines:
-            if "**Core Perk" in line:
-                gm = line.split('**:')[1].strip()
-            elif "**Legendary Breakthrough" in line:
-                leg = line.split('**:')[1].strip()
+            if "**Core" in line:
+                gm = line.split('**:')[1].strip() if '**:' in line else line.split(')**:')[1].strip() if ')**:' in line else ""
+                if not gm and ':' in line: gm = line.split(':')[1].strip()
+            elif "**Legendary" in line:
+                leg = line.split('**:')[1].strip() if '**:' in line else line.split(')**:')[1].strip() if ')**:' in line else ""
+                if not leg and ':' in line: leg = line.split(':')[1].strip()
         
         if name_line and gm:
             skill_data.append({

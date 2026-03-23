@@ -23,7 +23,7 @@ function parseSkillSpecs() {
         const lines = section.split('\n').map(l => l.trim()).filter(l => l);
         if (lines.length === 0) return;
         
-        const nameLine = lines[0];
+        const nameLine = lines[0].split(' - ')[0].trim();
 
         // Handling grouped weapon skills
         if (nameLine.includes('Weapon Skills')) {
@@ -61,10 +61,22 @@ function parseSkillSpecs() {
         let gm = '';
         let leg = '';
         lines.forEach(line => {
-            if (line.includes('**Core Perk')) {
-                gm = line.split('**:')[1].trim();
-            } else if (line.includes('**Legendary Breakthrough')) {
-                leg = line.split('**:')[1].trim();
+            if (line.includes('**Core')) {
+                const parts = line.split('**:');
+                if (parts.length > 1) gm = parts[1].trim();
+                else {
+                    const parts2 = line.split(')**:');
+                    if (parts2.length > 1) gm = parts2[1].trim();
+                }
+                if (!gm && line.includes(':')) gm = line.split(':')[1].trim();
+            } else if (line.includes('**Legendary')) {
+                const parts = line.split('**:');
+                if (parts.length > 1) leg = parts[1].trim();
+                else {
+                    const parts2 = line.split(')**:');
+                    if (parts2.length > 1) leg = parts2[1].trim();
+                }
+                if (!leg && line.includes(':')) leg = line.split(':')[1].trim();
             }
         });
         

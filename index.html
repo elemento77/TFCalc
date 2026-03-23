@@ -634,7 +634,7 @@
 
     <script>
         const MAX_POINTS = 50;
-                                                                                      const classes = [
+                                                                                            const classes = [
             {
                 name: "Arcanist", archetype: "staff/leather caster",
                 skills: [
@@ -693,6 +693,29 @@
         ];
 
         const skillData = [
+            { name: "Alchemy", gm: "Throwing an Explosion Potion at a creature deals bonus Fire damage scaling with Alchemy (10s CD).", leg: "*Transmutation* - 15% chance on a killing blow to generate a random potion in your backpack." },
+            { name: "Anatomy", gm: "Up to 15% chance on melee hit to deal an extra 20% of the attack's damage as AR-ignoring physical damage.", leg: "Vital Strikes also debilitate the creature, reducing their damage by 10% for 4s." },
+            { name: "Archery", gm: "Up to 10% chance on bow hit to root the creature in place for 1.5s.", leg: "Proc effect and 50% of strike's damage splash to a second nearby target." },
+            { name: "Begging", gm: "Up to 10% chance when targeted to force a creature to hesitate for 1.5s.", leg: "The hesitating creature also suffers a -25% damage penalty on their next attack." },
+            { name: "Camping", gm: "Standing still for 3s grants up to +2 HP/Stam/Mana regen/s to yourself and nearby allies.", leg: "The aura also grants flat 5% damage reduction against creatures." },
+            { name: "Evaluating Intelligence", gm: "Up to 15% chance on spell hit to reduce creature resistances by 20 for 5s.", leg: "Striking a flawed creature with a class ability causes an elemental detonation." },
+            { name: "Fencing", gm: "Up to 10% chance on fencing hit to mark your next attack to ignore 50% AR.", leg: "Proc effect and 50% of strike's damage splash to a second nearby target." },
+            { name: "Forensic Evaluation", gm: "Killing a creature restores up to 10% of your missing HP and Stamina.", leg: "Grants +5% swing/cast speed for 5s upon triggering Blood Sense." },
+            { name: "Hiding", gm: "Up to 10% chance when taking physical damage from a creature to nullify the hit and drop aggro.", leg: "Fading guarantees your next attack within 4s is a critical strike (or +50% spell damage)." },
+            { name: "Inscription", gm: "Up to 15% chance when casting a spell to skip reagent and mana consumption.", leg: "*Runic Warding* - When a creature would deal you a killing blow, absorb it and restore 15% max HP (5m CD)." },
+            { name: "Item Identification", gm: "Up to 10% chance when taking elemental damage to gain 50% resistance to that element for 4s.", leg: "You absorb shielded damage directly into your Mana pool." },
+            { name: "Macing", gm: "Up to 10% chance on macing hit to boost your Critical Strike chance by 15% for 3s.", leg: "*Shatter* - Landing a crit while Crushing Blow is active deals an additional 50% physical burst." },
+            { name: "Magery", gm: "Up to 10% chance when casting an offensive spell to auto-duplicate it at 50% damage on a nearby creature.", leg: "*Archmage's Focus* - Echo deals 100% damage and restores 5 mana." },
+            { name: "Magic Resist", gm: "Up to 15% chance when taking creature spell damage to convert 20% of it into HP.", leg: "*Aegis* - 5% chance to completely nullify incoming creature spell damage and reflect it back." },
+            { name: "Meditation", gm: "When mana drops below 30%, auto-restore up to 30 Mana (30s cooldown).", leg: "Adrenaline Rush also causes your next class ability to cost 0 resources." },
+            { name: "Parry", gm: "Up to 15% chance on successful parry to reflect 30% of the creature's damage back.", leg: "*Phalanx* - Reflecting damage also grants you a temporary HP shield equal to the amount reflected for 5s." },
+            { name: "Poisoning", gm: "Up to 15% chance on melee hit or offensive spell to inflict a stacking Poison DoT.", leg: "*Venomous Catalyst* - Hitting a poisoned creature with a class ability consumes the poison for instant damage." },
+            { name: "Remove Trap", gm: "Up to 15% chance when a creature moves adjacent to snare it for 2s (10s internal CD).", leg: "The snare also explodes for moderate Fire Ability Damage." },
+            { name: "Stealing", gm: "Up to 15% chance on melee hit to steal 10 Stamina from the creature and slow its next swing.", leg: "Also pilfers small amounts of gold directly into your backpack on proc." },
+            { name: "Swordsmanship", gm: "Up to 10% chance on sword hit to apply Severe Bleed (physical DoT).", leg: "Proc effect and 50% of strike's damage splash to a second nearby target." },
+            { name: "Tactics", gm: "Up to 10% chance when struck by a creature to refund 2s off all class active cooldowns.", leg: "After resetting, your next class ability deals +25% damage." },
+            { name: "Taste Identification", gm: "Up to 15% chance when below 50% HP to simulate a Greater Heal potion (20s internal CD).", leg: "The simulated potion also grants Total Refresh and Cure effects." },
+            { name: "Tracking", gm: "Grants up to +5% swing speed & ability damage against the most recently killed creature *type*.", leg: "10% chance on hit to apply Marked for Death (+15% damage from all sources for 4s)." }
         ];
 
         let activeClassIndex = 0;
@@ -1555,7 +1578,7 @@
 
     <script>
         const MAX_POINTS = 50;
-                                                                          const classes = [
+                                                                                const classes = [
             {
                 name: "Arcanist", archetype: "staff/leather caster",
                 skills: [
@@ -1614,6 +1637,29 @@
         ];
 
         const skillData = [
+            { name: "Alchemy", gm: "Throwing an Explosion Potion at a creature deals bonus Fire damage scaling with Alchemy (10s CD).", leg: "*Transmutation* - 15% chance on a killing blow to generate a random potion in your backpack." },
+            { name: "Anatomy", gm: "Up to 15% chance on melee hit to deal an extra 20% of the attack's damage as AR-ignoring physical damage.", leg: "Vital Strikes also debilitate the creature, reducing their damage by 10% for 4s." },
+            { name: "Archery", gm: "Up to 10% chance on bow hit to root the creature in place for 1.5s.", leg: "Proc effect and 50% of strike's damage splash to a second nearby target." },
+            { name: "Begging", gm: "Up to 10% chance when targeted to force a creature to hesitate for 1.5s.", leg: "The hesitating creature also suffers a -25% damage penalty on their next attack." },
+            { name: "Camping", gm: "Standing still for 3s grants up to +2 HP/Stam/Mana regen/s to yourself and nearby allies.", leg: "The aura also grants flat 5% damage reduction against creatures." },
+            { name: "Evaluating Intelligence", gm: "Up to 15% chance on spell hit to reduce creature resistances by 20 for 5s.", leg: "Striking a flawed creature with a class ability causes an elemental detonation." },
+            { name: "Fencing", gm: "Up to 10% chance on fencing hit to mark your next attack to ignore 50% AR.", leg: "Proc effect and 50% of strike's damage splash to a second nearby target." },
+            { name: "Forensic Evaluation", gm: "Killing a creature restores up to 10% of your missing HP and Stamina.", leg: "Grants +5% swing/cast speed for 5s upon triggering Blood Sense." },
+            { name: "Hiding", gm: "Up to 10% chance when taking physical damage from a creature to nullify the hit and drop aggro.", leg: "Fading guarantees your next attack within 4s is a critical strike (or +50% spell damage)." },
+            { name: "Inscription", gm: "Up to 15% chance when casting a spell to skip reagent and mana consumption.", leg: "*Runic Warding* - When a creature would deal you a killing blow, absorb it and restore 15% max HP (5m CD)." },
+            { name: "Item Identification", gm: "Up to 10% chance when taking elemental damage to gain 50% resistance to that element for 4s.", leg: "You absorb shielded damage directly into your Mana pool." },
+            { name: "Macing", gm: "Up to 10% chance on macing hit to boost your Critical Strike chance by 15% for 3s.", leg: "*Shatter* - Landing a crit while Crushing Blow is active deals an additional 50% physical burst." },
+            { name: "Magery", gm: "Up to 10% chance when casting an offensive spell to auto-duplicate it at 50% damage on a nearby creature.", leg: "*Archmage's Focus* - Echo deals 100% damage and restores 5 mana." },
+            { name: "Magic Resist", gm: "Up to 15% chance when taking creature spell damage to convert 20% of it into HP.", leg: "*Aegis* - 5% chance to completely nullify incoming creature spell damage and reflect it back." },
+            { name: "Meditation", gm: "When mana drops below 30%, auto-restore up to 30 Mana (30s cooldown).", leg: "Adrenaline Rush also causes your next class ability to cost 0 resources." },
+            { name: "Parry", gm: "Up to 15% chance on successful parry to reflect 30% of the creature's damage back.", leg: "*Phalanx* - Reflecting damage also grants you a temporary HP shield equal to the amount reflected for 5s." },
+            { name: "Poisoning", gm: "Up to 15% chance on melee hit or offensive spell to inflict a stacking Poison DoT.", leg: "*Venomous Catalyst* - Hitting a poisoned creature with a class ability consumes the poison for instant damage." },
+            { name: "Remove Trap", gm: "Up to 15% chance when a creature moves adjacent to snare it for 2s (10s internal CD).", leg: "The snare also explodes for moderate Fire Ability Damage." },
+            { name: "Stealing", gm: "Up to 15% chance on melee hit to steal 10 Stamina from the creature and slow its next swing.", leg: "Also pilfers small amounts of gold directly into your backpack on proc." },
+            { name: "Swordsmanship", gm: "Up to 10% chance on sword hit to apply Severe Bleed (physical DoT).", leg: "Proc effect and 50% of strike's damage splash to a second nearby target." },
+            { name: "Tactics", gm: "Up to 10% chance when struck by a creature to refund 2s off all class active cooldowns.", leg: "After resetting, your next class ability deals +25% damage." },
+            { name: "Taste Identification", gm: "Up to 15% chance when below 50% HP to simulate a Greater Heal potion (20s internal CD).", leg: "The simulated potion also grants Total Refresh and Cure effects." },
+            { name: "Tracking", gm: "Grants up to +5% swing speed & ability damage against the most recently killed creature *type*.", leg: "10% chance on hit to apply Marked for Death (+15% damage from all sources for 4s)." }
         ];
 
         let activeClassIndex = 0;
