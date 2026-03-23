@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 
@@ -633,7 +634,7 @@
 
     <script>
         const MAX_POINTS = 50;
-                                                                                const classes = [
+                                                                                      const classes = [
             {
                 name: "Arcanist", archetype: "staff/leather caster",
                 skills: [
@@ -692,29 +693,6 @@
         ];
 
         const skillData = [
-            { name: "Alchemy", gm: "Throwing an Explosion Potion at a creature deals bonus Fire damage scaling with Alchemy (10s CD).", leg: "*Transmutation* - 15% chance on a killing blow to generate a random potion in your backpack." },
-            { name: "Anatomy", gm: "Up to 15% chance on melee hit to deal an extra 20% of the attack's damage as AR-ignoring physical damage.", leg: "Vital Strikes also debilitate the creature, reducing their damage by 10% for 4s." },
-            { name: "Archery", gm: "Up to 10% chance on bow hit to root the creature in place for 1.5s.", leg: "Proc effect and 50% of strike's damage splash to a second nearby target." },
-            { name: "Begging", gm: "Up to 10% chance when targeted to force a creature to hesitate for 1.5s.", leg: "The hesitating creature also suffers a -25% damage penalty on their next attack." },
-            { name: "Camping", gm: "Standing still for 3s grants up to +2 HP/Stam/Mana regen/s to yourself and nearby allies.", leg: "The aura also grants flat 5% damage reduction against creatures." },
-            { name: "Evaluating Intelligence", gm: "Up to 15% chance on spell hit to reduce creature resistances by 20 for 5s.", leg: "Striking a flawed creature with a class ability causes an elemental detonation." },
-            { name: "Fencing", gm: "Up to 10% chance on fencing hit to mark your next attack to ignore 50% AR.", leg: "Proc effect and 50% of strike's damage splash to a second nearby target." },
-            { name: "Forensic Evaluation", gm: "Killing a creature restores up to 10% of your missing HP and Stamina.", leg: "Grants +5% swing/cast speed for 5s upon triggering Blood Sense." },
-            { name: "Hiding", gm: "Up to 10% chance when taking physical damage from a creature to nullify the hit and drop aggro.", leg: "Fading guarantees your next attack within 4s is a critical strike (or +50% spell damage)." },
-            { name: "Inscription", gm: "Up to 15% chance when casting a spell to skip reagent and mana consumption.", leg: "*Runic Warding* - When a creature would deal you a killing blow, absorb it and restore 15% max HP (5m CD)." },
-            { name: "Item Identification", gm: "Up to 10% chance when taking elemental damage to gain 50% resistance to that element for 4s.", leg: "You absorb shielded damage directly into your Mana pool." },
-            { name: "Macing", gm: "Up to 10% chance on macing hit to boost your Critical Strike chance by 15% for 3s.", leg: "*Shatter* - Landing a crit while Crushing Blow is active deals an additional 50% physical burst." },
-            { name: "Magery", gm: "Up to 10% chance when casting an offensive spell to auto-duplicate it at 50% damage on a nearby creature.", leg: "*Archmage's Focus* - Echo deals 100% damage and restores 5 mana." },
-            { name: "Magic Resist", gm: "Up to 15% chance when taking creature spell damage to convert 20% of it into HP.", leg: "*Aegis* - 5% chance to completely nullify incoming creature spell damage and reflect it back." },
-            { name: "Meditation", gm: "When mana drops below 30%, auto-restore up to 30 Mana (30s cooldown).", leg: "Adrenaline Rush also causes your next class ability to cost 0 resources." },
-            { name: "Parry", gm: "Up to 15% chance on successful parry to reflect 30% of the creature's damage back.", leg: "*Phalanx* - Reflecting damage also grants you a temporary HP shield equal to the amount reflected for 5s." },
-            { name: "Poisoning", gm: "Up to 15% chance on melee hit or offensive spell to inflict a stacking Poison DoT.", leg: "*Venomous Catalyst* - Hitting a poisoned creature with a class ability consumes the poison for instant damage." },
-            { name: "Remove Trap", gm: "Up to 15% chance when a creature moves adjacent to snare it for 2s (10s internal CD).", leg: "The snare also explodes for moderate Fire Ability Damage." },
-            { name: "Stealing", gm: "Up to 15% chance on melee hit to steal 10 Stamina from the creature and slow its next swing.", leg: "Also pilfers small amounts of gold directly into your backpack on proc." },
-            { name: "Swordsmanship", gm: "Up to 10% chance on sword hit to apply Severe Bleed (physical DoT).", leg: "Proc effect and 50% of strike's damage splash to a second nearby target." },
-            { name: "Tactics", gm: "Up to 10% chance when struck by a creature to refund 2s off all class active cooldowns.", leg: "After resetting, your next class ability deals +25% damage." },
-            { name: "Taste Identification", gm: "Up to 15% chance when below 50% HP to simulate a Greater Heal potion (20s internal CD).", leg: "The simulated potion also grants Total Refresh and Cure effects." },
-            { name: "Tracking", gm: "Grants up to +5% swing speed & ability damage against the most recently killed creature *type*.", leg: "10% chance on hit to apply Marked for Death (+15% damage from all sources for 4s)." }
         ];
 
         let activeClassIndex = 0;
@@ -941,4 +919,926 @@
     </script>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terra Fatalis | PvM Class Calculator</title>
+    <link rel="icon" type="image/png" href="Assets/tf-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #030303;
+            --text-color: #ffffff;
+            --accent-blood: #ff2d2d;
+            --accent-blood-glow: rgba(255, 45, 45, 0.5);
+            --royal-gold: #D4AF37;
+            --royal-gold-glow: rgba(212, 175, 55, 0.4);
+            --card-bg: rgba(10, 10, 10, 0.85);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(7, 7, 7, 0.92);
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: url('Assets/background.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+
+
+        /* THEME BACKGROUND VIDEO */
+        .bg-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -3;
+            object-fit: cover;
+            opacity: 0.6;
+            filter: brightness(0.7) contrast(1.2);
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(3, 3, 3, 0.4) 40%, rgba(3, 3, 3, 0.9) 100%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+            width: 100%;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            max-width: 500px;
+            filter: drop-shadow(0 0 20px var(--accent-blood-glow));
+            transition: var(--transition);
+        }
+
+        .header-icon-small {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 0 8px var(--accent-blood-glow));
+        }
+
+        .sticky-tracker {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(7, 7, 7, 0.98));
+            backdrop-filter: blur(30px);
+            padding: 10px 40px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .tracker-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .active-class-badge {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--accent-blood);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-left: 2px solid var(--accent-blood);
+            padding-left: 15px;
+        }
+
+        .points-display-main {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .points-val-large {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 900;
+            line-height: 1;
+            color: var(--accent-blood);
+            text-shadow: 0 0 15px var(--accent-blood-glow);
+        }
+
+        .points-label-small {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            opacity: 0.7;
+            margin-top: 4px;
+            transition: var(--transition);
+        }
+
+        .points-label-small.maniacal-glow {
+            color: var(--accent-blood);
+            text-shadow: 0 0 10px var(--accent-blood-glow), 0 0 20px var(--accent-blood);
+            opacity: 1;
+            font-weight: 900;
+            animation: maniacalPulse 1.5s infinite alternate;
+        }
+
+        @keyframes maniacalPulse {
+            from { transform: scale(1); filter: brightness(1); }
+            to { transform: scale(1.1); filter: brightness(1.5); }
+        }
+
+        .class-select-box {
+            background: #111;
+            border: 1px solid var(--card-border);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .btn-system {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .btn-system:hover { border-color: var(--accent-blood); background: rgba(255,45,45,0.1); }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.6);
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            transition: var(--transition);
+        }
+
+        .btn-reset:hover {
+            border-color: var(--accent-blood);
+            color: var(--accent-blood);
+            background: rgba(255, 45, 45, 0.05);
+        }
+
+        .btn-reset.gold {
+            border-color: var(--royal-gold);
+            color: var(--royal-gold);
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin: 60px 0 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: #fff;
+        }
+
+        .section-title::before {
+            content: "";
+            width: 40px;
+            height: 2px;
+            background: var(--accent-blood);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 30px;
+        }
+
+        .skill-card {
+            background-image: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.7)), url('Assets/skill-card-bg-v2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Flash Layer - Freed from resting state */
+        .skill-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('Assets/skill-card-bg-v2.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+            border-radius: 28px;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-card.max-flash::after {
+            animation: cardFreedFlash 1.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        @keyframes cardFreedFlash {
+            0% { opacity: 0; filter: brightness(1) contrast(1); transform: scale(1); }
+            15% { opacity: 1; filter: brightness(2) contrast(1.2); transform: scale(1.02); }
+            100% { opacity: 0; filter: brightness(1) contrast(1); transform: scale(1); }
+        }
+
+        /* Subtle glow on the card itself during flash */
+        .skill-card.max-flash {
+            animation: cardGlowBurst 1.5s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        @keyframes cardGlowBurst {
+            0% { border-color: var(--card-border); box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+            15% { border-color: rgba(255, 255, 255, 0.6); box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); }
+            100% { border-color: var(--card-border); box-shadow: 0 0 0 rgba(255, 255, 255, 0); }
+        }
+
+        /* Ensure content stays above the flash layer */
+        .skill-header, .rank-controls, .skill-desc, .capstone-box {
+            position: relative;
+            z-index: 2;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px) scale(1.01);
+            border-color: rgba(255, 45, 45, 0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .skill-name {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+            word-break: break-word;
+        }
+
+        .skill-flavor-top {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+            font-family: var(--font-main);
+            text-transform: none;
+        }
+
+        .rank-badge {
+            background: #151515;
+            padding: 6px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--accent-blood);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .rank-badge.active {
+            color: var(--royal-gold);
+            border-color: var(--royal-gold);
+            box-shadow: 0 0 10px var(--royal-gold-glow);
+        }
+
+        .rank-badge.max {
+            color: #fff;
+            background: var(--royal-gold);
+            border-color: var(--royal-gold);
+            box-shadow: 0 0 20px var(--royal-gold-glow);
+        }
+
+        .rank-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .skill-metadata-right {
+            margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        .skill-type-tag {
+            font-size: 0.7rem;
+            font-weight: 900;
+            color: var(--accent-blood);
+            text-transform: uppercase;
+        }
+
+        .skill-cost-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: var(--font-main);
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover:not(:disabled) {
+            background: var(--accent-blood);
+            border-color: var(--accent-blood);
+            box-shadow: 0 0 15px var(--accent-blood-glow);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.1;
+            cursor: not-allowed;
+        }
+
+        .skill-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 30px;
+            min-height: 4.8em;
+        }
+
+        .val-hl { color: var(--accent-blood); font-weight: 700; }
+
+        .capstone-box {
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            border-radius: 20px;
+            padding: 22px;
+            transition: var(--transition);
+        }
+
+        .capstone-box.unlocked {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(0,0,0,0));
+            border: 1px solid var(--royal-gold);
+            box-shadow: inset 0 0 25px rgba(212, 175, 55, 0.05);
+        }
+
+        .capstone-title {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--royal-gold);
+            margin-bottom: 8px;
+        }
+
+        .utility-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: var(--transition);
+        }
+
+        .util-select-v2 {
+            width: 100%;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: var(--font-heading);
+            font-weight: 600;
+        }
+
+        .effect-leg { 
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            margin-top: 10px;
+            padding-top: 10px;
+            color: var(--royal-gold);
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding: 60px;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .container { padding: 10px 10px 100px; }
+            
+            .logo { max-width: 180px; }
+            .logo-container { margin-bottom: 20px; }
+            .header-icon-small { width: 24px; height: 24px; }
+
+            .sticky-tracker { 
+                flex-direction: row; 
+                flex-wrap: wrap;
+                gap: 10px; 
+                padding: 10px 15px;
+                justify-content: space-between;
+            }
+            
+            .tracker-left { 
+                flex-direction: row; 
+                width: auto;
+                gap: 8px;
+                flex: 1;
+            }
+            
+            .class-select-box { 
+                padding: 6px 10px;
+                font-size: 0.85rem;
+                flex: 1;
+            }
+
+            .btn-reset { 
+                padding: 6px 10px;
+                font-size: 0.7rem;
+                width: auto;
+            }
+
+            .btn-system {
+                padding: 6px 8px;
+                font-size: 0.8rem;
+            }
+
+            .points-display-main { 
+                align-items: flex-end; 
+                width: auto;
+                border-top: none;
+                padding-top: 0;
+            }
+            
+            .points-val-large { font-size: 1.4rem; }
+            .points-label-small { font-size: 0.5rem; letter-spacing: 0.1em; }
+
+            .section-title { 
+                font-size: 1.2rem; 
+                margin: 20px 0 15px;
+            }
+            
+            .section-title::before { display: none; }
+
+            .skills-grid { 
+                grid-template-columns: 1fr; 
+                gap: 15px;
+            }
+
+            .skill-card { padding: 25px; border-radius: 20px; }
+            
+            .skill-name { font-size: 1.3rem; }
+            
+            .rank-controls { gap: 10px; }
+            
+            .control-btn { width: 44px; height: 44px; }
+        }
+
+        /* Support for very small screens */
+        @media (max-width: 480px) {
+            .points-val-large { font-size: 1.8rem; }
+            .logo { max-width: 260px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-overlay"></div>
+
+    <!-- STICKY HEADER AT TOP -->
+    <div class="sticky-tracker">
+        <div class="tracker-left">
+            <img src="Assets/tf-icon.png" alt="Icon" class="header-icon-small">
+            <select id="classSelect" class="class-select-box" onchange="changeClass()"></select>
+            <button class="btn-reset gold" onclick="resetEverything()">Global Reset</button>
+            <button id="muteBtn" class="btn-system" onclick="toggleMute()" title="Toggle Music">🔊</button>
+        </div>
+        
+        <div class="points-display-main">
+            <div class="points-val-large" id="pointsRemaining">50 / 50</div>
+            <div class="points-label-small">Maniacal Energy</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="Assets/tf-logo.png" alt="Terra Fatalis" class="logo">
+            </div>
+        </header>
+
+        <audio id="bgMusic" loop>
+            <source src="Assets/Terra Fatalis Instrumental.mp3" type="audio/mpeg">
+        </audio>
+
+        <audio id="unlockSound">
+            <source src="Assets/Unlock.mp3" type="audio/mpeg">
+        </audio>
+
+        <div class="section-title">Core Disciplines</div>
+        <div class="skills-grid" id="skillsContainer"></div>
+
+        <div class="section-title">Sacred Specializations</div>
+        <div class="skills-grid" id="utilityContainer"></div>
+
+        <footer>
+            <div style="font-size: 0.7rem; letter-spacing: 0.4em; opacity: 0.4; text-transform: uppercase;">Terra Fatalis &copy; 2026</div>
+        </footer>
+    </div>
+
+    <script>
+        const MAX_POINTS = 50;
+                                                                          const classes = [
+            {
+                name: "Arcanist", archetype: "staff/leather caster",
+                skills: [
+                    { id: "arc_s1", name: "Arcane Nova", type: ".s1 Active", flavor: "AoE burst. Fire and Energy (Split) Damage", cost: "Cost: 25 Mana", getDesc: (r) => `ability damage <span class="val-hl">+${r * 3}%</span>; radius increases at ranks 4/8/11 (2 tiles at rank 1, max 5 tiles at rank 11); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Supernova", capDesc: "Arcane Nova pulls nearby creatures slightly inward before detonating, guaranteeing full AoE coverage. Leaves a residual Fire DoT field dealing 20% of the initial damage over 4s to creatures remaining in the field.", rank: 0 },
+                    { id: "arc_s2", name: "Elemental Surge", type: ".s2 Active", flavor: "timed damage buff", cost: "Cost: 15 Mana", getDesc: (r) => `ability damage <span class="val-hl">+${r * 2}%</span> to spells and abilities for 10s; mana cost of spells increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> as a risk trade; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Cannot be pre-applied before PvP — disabled while in PvP state.`, capName: "Stormweaver", capDesc: "Each spell cast during Elemental Surge reduces the remaining cooldown of Arcane Nova and Blink by 0.5s.", rank: 0 },
+                    { id: "arc_s3", name: "Blink", type: ".s3 Active", flavor: "mobility and aggression", cost: "Cost: 15 Mana", getDesc: (r) => `blink range <span class="val-hl">${(r * +0.2).toFixed(1)}</span> tiles (base 4 tiles, max 6 tiles at rank 10+); CD <span class="val-hl">${(9.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Mirror Image", capDesc: "Blink leaves two ArcanistClones at origin instead of one. Both independently cast offensive spells using AI_Mage for 4 seconds then detonate simultaneously for Cold AoE. Clone lifetime aligns with floor CD — aggressive casters can Blink, wait for detonation, Blink again almost immediately.", rank: 0 },
+                    { id: "arc_p1", name: "Spellweave", type: "Passive", flavor: "elemental pair rotation", cost: "", getDesc: (r) => `three elemental pairs each grant follow-up spell bonus damage <span class="val-hl">${(r * +2) > 0 ? "+" : ""}${r * +2}%</span> when the follow-up lands on the same target within 5s of the prime (base +15% at rank 1, max +35% at rank 11). Pairs: Fireball (circle 3) into Lightning (circle 4); Curse (circle 4) into Mind Blast (circle 5); Explosion (circle 6) into Energy Bolt (circle 6). Arcane Ward auto-Curse counts as a valid Spellweave Curse prime. Echo Cast procs do not set or consume pair state. Refreshing a prime on the same target restarts the 5s window.`, capName: "Arcane Overload", capDesc: "When all three pairs are completed on the same target within a 20-second window — all six spells landed in any order — an automatic combined elemental detonation fires instantly on the target incorporating all three element types. Cannot be triggered by procs, only intentional casts. Fires automatically with no button press required.", rank: 0 },
+                    { id: "arc_p2", name: "Arcane Ward", type: "Passive", flavor: "reactive magic defenses", cost: "", getDesc: (r) => `tiered reactive magic that fires automatically when attacked — no button press, cannot be pre-banked before PvP because all triggers require an active creature attack. Ranks 1-4: on being struck by a creature, auto-casts Curse on the attacker (30% chance at rank 1, increasing by <span class="val-hl">${(r * 3) > 0 ? "+" : ""}${r * 3}%</span> to 39% at rank 4, always guaranteed at rank 4+). Ranks 5-8 also unlock: 20% chance to auto-cast Paralyze on the attacker when struck, increasing by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (20% at rank 5, 23% at rank 8). Ranks 9-11 also unlock: 15% chance to auto-cast Magic Reflection when taking spell damage from a creature.`, capName: "Death's Echo", capDesc: "When HP crosses below 30% from above, two ArcanistClones spawn at the caster's current location and standard spellbook Invisibility is applied to the caster. Clones use AI_Mage for 4 seconds then detonate for Cold AoE. 60s ICD. Only fires on threshold crossing — does not trigger if already below 30% at combat start. If Mirror Image clones are already active when Death's Echo fires, all four clones are simultaneously present.", rank: 0 },
+                    { id: "arc_p3", name: "Leyline Attunement", type: "Passive", flavor: "mana sustain", cost: "", getDesc: (r) => `+1 flat mana regen at ranks 3/6/9; passive mana regen increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> while in PvM (max +11% at rank 11).`, capName: "Mana Well", capDesc: "After standing still for 3 seconds, passive mana regen doubles until the caster moves (PvM only). The AoE Nuker who positions between Nova casts benefits most — standing still is natural to that playstyle.", rank: 0 }
+                ]
+            },
+            {
+                name: "Berzerker", archetype: "2H melee",
+                skills: [
+                    { id: "ber_s1", name: "Whirlwind Strike", type: ".s1 Active", flavor: "AoE melee — Pack Bonus. Physical (Scales with Weapon Tier) Damage", cost: "Cost: 20 Stamina", getDesc: (r) => `ability damage <span class="val-hl">+${r * 3}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>; each creature hit beyond the first increases damage dealt to all targets by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (Pack Bonus, max +11% at rank 11).`, capName: "Vortex", capDesc: "Whirlwind pulls creatures within 3 tiles inward before striking. Refunds 1s of cooldown per creature hit up to 4s total.", rank: 0 },
+                    { id: "ber_s2", name: "Bloodlust", type: ".s2 Active", flavor: "self buff", cost: "Cost: 10 HP", getDesc: (r) => `ability damage <span class="val-hl">+${r * 4}%</span> to melee and physical attacks for 8s; CD <span class="val-hl">${(19 - (r * 1)).toFixed(1)}s</span>.`, capName: "Bloodbath", capDesc: "During Bloodlust, weapon critical hits or abilities vs creatures reduce all active cooldowns by 1s (ICD 2s).", rank: 0 },
+                    { id: "ber_s3", name: "Brutal Leap", type: ".s3 Active", flavor: "gap close + Frenzy ignition. Physical (Scales with Weapon Tier) Damage", cost: "Cost: 15 Stamina", getDesc: (r) => `leap range <span class="val-hl">${(r * +0.2).toFixed(1)}</span> tiles (cap +2 tiles); grants Frenzy stacks on landing scaling with rank (ranks 1-3: 1 stack, ranks 4-6: 2 stacks, ranks 7-9: 3 stacks, ranks 10+: 4 stacks); short interrupt on landing prevents immediate retaliation; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Savage Impact", capDesc: "If landing with 4 or more Frenzy stacks carried from a previous target, the landing hit is an automatic critical strike.", rank: 0 },
+                    { id: "ber_p1", name: "Heavy Momentum", type: "Passive", flavor: "tempo", cost: "", getDesc: (r) => `swing period vs creatures reduced by <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> (max 22%). Compounds with Blood Frenzy stack speed bonus.`, capName: "Crushing Impact", capDesc: "15% chance on melee hit vs creatures to ignore absorb for that hit and apply 0.5s stagger.", rank: 0 },
+                    { id: "ber_p2", name: "Thick Skin", type: "Passive", flavor: "survivability", cost: "", getDesc: (r) => `damage taken from creatures reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max 11%).`, capName: "Vengeful Call", capDesc: "When taking a single hit greater than 20 damage from a creature, gain +5 stamina (ICD 10s).", rank: 0 },
+                    { id: "ber_p3", name: "Blood Frenzy", type: "Passive", flavor: "single-target escalation", cost: "", getDesc: (r) => `consecutive hits on the same target build Frenzy stacks (max 6); each active stack increases swing speed by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> and deals physical splash to all adjacent creatures equal to <span class="val-hl">${(r * 5) > 0 ? "+" : ""}${r * 5}%</span> of base weapon damage; switching targets resets stacks to zero; on kill stacks freeze for 3s — Brutal Leap within this window transfers all stacks to the new target.`, capName: "Blood Ignition", capDesc: "At max 6 stacks, the next hit automatically triggers a free physical detonation on the target and all adjacent creatures equal to 40% weapon damage, then resets stacks to zero.", rank: 0 }
+                ]
+            },
+            {
+                name: "Deathcaller", archetype: "staff/leather necro/summoner",
+                skills: [
+                    { id: "dea_s1", name: "Ossuary Ritual", type: ".s1 Active", flavor: "raise skeleton. Physical (Skeleton melee) / Poison (Corpse Explosion) Damage", cost: "Cost: 15 Mana", getDesc: (r) => `max skeletons increases with rank (1 at rank 1, 2 at rank 4, 3 at rank 8); skeleton power <span class="val-hl">${(r * +1) > 0 ? "+" : ""}${r * +1}%</span>; cooldown fixed at 15s.`, capName: "Bone Armor", capDesc: "Skeletons spawn with bone armor absorbing the next 3 physical hits completely. When a skeleton dies by any means it refunds 5s of cooldown to all other active skills. Bone Armor makes deliberate detonation more valuable — a skeleton that absorbed 3 hits survived longer, meaning higher remaining HP and therefore a larger Corpse Explosion burst. Pairs with Death Pact (Undying Command capstone) — a dying skeleton refunds CDs and heals the caster simultaneously.", rank: 0 },
+                    { id: "dea_s2", name: "Necrotic Bolt", type: ".s2 Active", flavor: "ranged poison DoT + lifesteal. Poison (DoT) Damage", cost: "Cost: 20 Mana", getDesc: (r) => `fires a ranged bolt applying a Poison DoT that ticks every 2 seconds for 8 seconds (4 ticks total); ability damage <span class="val-hl">+${r * 2}%</span>; lifesteal restores HP on each tick scaling with rank (5% at rank 1, <span class="val-hl">${(r * +1) > 0 ? "+" : ""}${r * +1}%</span>, 15% at rank 11); max targets scales with rank (1 at rank 1, 2 at rank 3, 3 at rank 6, 4 at rank 9); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Hitting the same target refreshes the DoT duration — does not add a second stack. Exception: a target currently under active Curse of Decay accepts a second Necrotic Bolt stack (max 2 stacks, both ticking independently, both generating lifesteal).`, capName: "Shared Agony", capDesc: "Each tick of Necrotic Bolt on a cursed target heals both the caster and all active skeletons simultaneously for the lifesteal amount. Uncursed targets heal the caster only. With 4 cursed double-stacked targets and 3 active skeletons, the entire army sustains itself through the rotation.", rank: 0 },
+                    { id: "dea_s3", name: "Curse of Decay", type: ".s3 Active", flavor: "AoE spreading debuff", cost: "Cost: 15 Mana", getDesc: (r) => `radius increases at ranks 3/6/9 (2 tiles at rank 1, max 5 tiles at rank 11); creature resistance reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max -11%); creature HP regen reduced by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max -11%); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. When a cursed creature dies, the curse spreads instantly to all creatures within 3 tiles at full remaining duration. Corpse Explosion on a cursed skeleton also triggers spread immediately without waiting for a natural death.`, capName: "Wasting Plague", capDesc: "Cursed creatures also suffer active HP reduction each tick — the curse physically rots them on top of resistance and regen reduction. Stacks with Necrotic Bolt DoT for double rot on cursed targets. When the curse spreads on death, Wasting Plague rot spreads with it at full potency.", rank: 0 },
+                    { id: "dea_p1", name: "Necrotic Potency", type: "Passive", flavor: "kill-powered empowerment", cost: "", getDesc: (r) => `each creature or skeleton death within 6 tiles grants a brief empowerment window increasing spell damage and Necrotic Bolt damage by <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> (max +22% at rank 11); window duration increases from 4s at ranks 1-2 to 7s at ranks 9-11; deaths refresh the window rather than stacking it. No stack tracking required — the player feels it through combat rhythm. Both creature deaths and skeleton deaths qualify.`, capName: "Soul Surge", capDesc: "Each nearby death also reduces Necrotic Bolt's cooldown by 1 second. High kill-rate dungeon runs keep Necrotic Bolt cycling almost continuously. Boss fights with deliberate Corpse Explosion timing generate the same effect on demand.", rank: 0 },
+                    { id: "dea_p2", name: "Essence Harvest", type: "Passive", flavor: "mana on kill", cost: "", getDesc: (r) => `on creature kill, restore mana equal to 1 + rank (scales each rank, max 12 mana at rank 11). With 3 skeletons actively killing, mana sustains Ossuary Ritual (15 mana), Necrotic Bolt (20 mana), and Curse of Decay (15 mana) across a dungeon run without potions.`, capName: "Soul Overflow", capDesc: "If mana is already full when Essence Harvest triggers, the excess converts into a temporary HP shield for 10s. Rewards the Summoner who keeps the army killing at full mana — surplus becomes survivability.", rank: 0 },
+                    { id: "dea_p3", name: "Undying Command", type: "Passive", flavor: "permanent skeleton empowerment", cost: "", getDesc: (r) => `all active skeletons permanently gain bonus attack speed and damage equal to <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> (max +22% attack speed and +22% damage at rank 11). Always active, no activation required. Absorbs the army buff that Dark Sacrement previously provided as a timed active.`, capName: "Death Pact", capDesc: "When a skeleton dies by any means — natural combat, Corpse Explosion, or unsummon timer — it transfers 20% of its remaining HP to the Deathcaller as a heal before dying. A full-HP Bone Armor skeleton deliberately sacrificed via Corpse Explosion simultaneously: refunds 5s to all active CDs (Bone Armor), heals the caster for 20% max skeleton HP (Death Pact), deals AoE Poison damage (Corpse Explosion), spreads the curse if cursed (Wasting Plague), triggers Necrotic Potency empowerment window, and reduces Necrotic Bolt CD by 1s (Soul Surge if capstoned).", rank: 0 }
+                ]
+            },
+            {
+                name: "Marksman", archetype: "bows",
+                skills: [
+                    { id: "mar_s1", name: "Piercing Shot", type: ".s1 Active", flavor: "line shot. Physical (Scales with Weapon Tier) Damage", cost: "Cost: 15 Stamina", getDesc: (r) => `line length +1 tile at odd ranks (max 8 tiles at rank 11); ability damage <span class="val-hl">+${r * 2}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Pinning Shot", capDesc: "Creatures hit by the line shot are rooted in place for 2s. Hitting 3 or more creatures instantly refunds 3s of cooldown.", rank: 0 },
+                    { id: "mar_s2", name: "Rain of Arrows", type: ".s2 Active", flavor: "frontal cone barrage. Physical (Scales with Weapon Tier) Damage", cost: "Cost: 25 Stamina", getDesc: (r) => `cone range +1 tile per rank (base 2 tiles, max 12 tiles at rank 11); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Channel fires over 2 seconds; damage per tick normalised across the duration.`, capName: "Barrage", capDesc: "Fires two waves, second landing 0.5s after the first. Any active Set Traps inside the cone are detonated by the arrows landing on them.", rank: 0 },
+                    { id: "mar_s3", name: "Set Trap", type: ".s3 Active", flavor: "floor trap placement", cost: "Cost: 15 Stamina", getDesc: (r) => `trap ability damage <span class="val-hl">+${r * 2}%</span>; simultaneous trap cap increases at ranks 5 and 9 (2 traps at rank 1, 3 at rank 5, 4 at rank 9); trap types cycle sequentially unlocking progressively (Dart, Poison, Explosion at rank 1; Gas and Frag at rank 8; Saw and Spike at rank 11); CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Traps actively lure creatures within 3 tiles toward them every 0.5s; triggering creature is paralysed for 3.5s.`, capName: "Master Trapper", capDesc: "Trap cap raises to 6 simultaneous traps. Each activation drops 3 traps in a cluster around the player's position. Each trap trigger reduces Set Trap cooldown by 1s.", rank: 0 },
+                    { id: "mar_p1", name: "Eagle Eye", type: "Passive", flavor: "range mastery", cost: "", getDesc: (r) => `+1 tile max bow range at even ranks (max +5 tiles at rank 10); stamina cost of all Marksman actives reduced by 1 per rank (max -11 stamina at rank 11).`, capName: "Keen Eye", capDesc: "Critical strikes restore 8% of the damage dealt as HP. Applies to all crit sources including auto-attacks and trap detonation crits.", rank: 0 },
+                    { id: "mar_p2", name: "Precise Strikes", type: "Passive", flavor: "critical mastery", cost: "", getDesc: (r) => `critical strike chance vs creatures increases by <span class="val-hl">${(r * 1) > 0 ? "+" : ""}${r * 1}%</span> (max 11% at rank 11).`, capName: "Executioner", capDesc: "Targets below 20% HP take +50% damage from critical strikes by the Marksman.", rank: 0 },
+                    { id: "mar_p3", name: "Hunter's Mark", type: "Passive", flavor: "guaranteed mark on first hit", cost: "", getDesc: (r) => `first arrow always marks the target automatically; marked creatures take increased damage from all sources scaling with rank (<span class="val-hl">+${Math.floor(r * 1 / 2)}%</span>, max +6% at rank 12); mark duration +1s per rank (base 5s, max 15s at rank 11); flat 5% ammo save chance retained as a background passive at all ranks.`, capName: "Blood Trail", capDesc: "When a marked creature dies, or when a Set Trap triggers on a marked creature, the mark instantly spreads to all creatures within 3 tiles for the full duration.", rank: 0 }
+                ]
+            },
+            {
+                name: "Templar", archetype: "1H + shield",
+                skills: [
+                    { id: "tem_s1", name: "Holy Shield", type: ".s1 Active", flavor: "block charges + Judgment fuel", cost: "Cost: 15 Stamina", getDesc: (r) => `grants block charges (1 at rank 1, +1 at ranks 4/7/10, max 4 charges); charge duration +1s per rank; CD <span class="val-hl">${(19.5 - (r * 0.5)).toFixed(1)}s</span>. Charges can be consumed by Judgment for amplified damage instead of blocking incoming hits (1 charge = heavy, 2 = devastating, 3 = maximum burst).`, capName: "Aegis", capDesc: "Block charges never expire until consumed. When a charge is consumed blocking a hit, all party members within 5 tiles gain a 50 HP absorption shield for 5s.", rank: 0 },
+                    { id: "tem_s2", name: "Judgment", type: ".s2 Active", flavor: "holy strike — charge-scaled. Energy (Holy) Damage", cost: "Cost: 20 Mana", getDesc: (r) => `ability damage <span class="val-hl">+${r * 4}%</span>; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>. Consuming Holy Shield charges on cast multiplies damage output (0 charges = base, 1 = heavy, 2 = devastating, 3 = maximum burst).`, capName: "Condemnation", capDesc: "Judgment applies a debuff causing the target to take +10% damage from all sources for 8s. Each successful parry reduces Judgment cooldown by 1s.", rank: 0 },
+                    { id: "tem_s3", name: "Provoke", type: ".s3 Active", flavor: "passive thorns + AoE taunt", cost: "Cost: 10 Stamina", getDesc: (r) => `passive thorns are always active — reflects <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> of incoming creature attack damage back to the attacker at all times; active: forces all creatures within 4 tiles to target you; taunt duration +0.5s per rank; during the taunt window passive thorns are tripled; CD <span class="val-hl">${(14.5 - (r * 0.5)).toFixed(1)}s</span>.`, capName: "Martyr's Wrath", capDesc: "When the taunt window expires, all accumulated reflected damage detonates as a single burst hitting every taunted creature simultaneously.", rank: 0 },
+                    { id: "tem_p1", name: "Guardian's Zeal", type: "Passive", flavor: "shield mastery", cost: "", getDesc: (r) => `parry chance increases by <span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> while a shield is equipped (max 22%).`, capName: "Shield Slam", capDesc: "On a successful parry vs a creature, 20% chance to stun it for 1s (ICD 6s per attacker).", rank: 0 },
+                    { id: "tem_p2", name: "Retribution", type: "Passive", flavor: "holy retaliation", cost: "", getDesc: (r) => `<span class="val-hl">${(r * 2) > 0 ? "+" : ""}${r * 2}%</span> chance when hit by a creature to deal holy retaliation damage back to the attacker.`, capName: "Holy Chain", capDesc: "Retribution hits can arc to a second nearby creature for 50% of the retaliation damage.", rank: 0 },
+                    { id: "tem_p3", name: "Aura of Devotion", type: "Passive", flavor: "support aura + magic resilience", cost: "", getDesc: (r) => `allies within 5 tiles gain bonus stamina regen in PvM (<span class="val-hl">+${Math.floor(r * 1 / 3)}</span> stam regen, max +3 at rank 9+); Templar passively reduces incoming magic damage by <span class="val-hl">+${Math.floor(r * 1 / 3)}%</span> (max 4% at rank 11).`, capName: "Divine Grace", capDesc: "Allies affected have 10% chance not to spend stamina on weapon specials (PvM only). Templar magic damage reduction increases to 6%.", rank: 0 }
+                ]
+            }
+        ];
+
+        const skillData = [
+        ];
+
+        let activeClassIndex = 0;
+        let selectedSkills = [null, null, null, null, null];
+        let legendaryStates = [false, false, false, false, false];
+
+        function init() {
+            const select = document.getElementById('classSelect');
+            classes.forEach((c, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = c.name;
+                select.appendChild(opt);
+            });
+            render();
+            renderUtilities();
+        }
+
+        function changeClass() {
+            activeClassIndex = parseInt(document.getElementById('classSelect').value);
+            render();
+        }
+
+        function getPointsSpent() {
+            let spent = 0;
+            classes[activeClassIndex].skills.forEach(s => {
+                if (s.rank <= 11) spent += s.rank;
+                else spent += 15;
+            });
+            return spent;
+        }
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (type === 'lock') {
+                const snd = document.getElementById('unlockSound');
+                if (snd) {
+                    snd.volume = 0.3;
+                    snd.currentTime = 0;
+                    snd.play().catch(() => {});
+                }
+                return;
+            }
+
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+            if (type === 'add') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+            } else if (type === 'sub') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+            } else if (type === 'reset') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.1);
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+            }
+
+            osc.start(now);
+            osc.stop(now + 0.1);
+        }
+
+        let flashSkillId = null;
+        function updateRank(skillId, delta) {
+            const skill = classes[activeClassIndex].skills.find(s => s.id === skillId);
+            const totalSpent = getPointsSpent();
+            const available = MAX_POINTS - totalSpent;
+
+            if (delta > 0) {
+                if (skill.rank < 11 && available >= 1) {
+                    skill.rank++;
+                    playSound('add');
+                } else if (skill.rank === 11 && available >= 4) {
+                    skill.rank = 12;
+                    playSound('lock');
+                    // Only set flash for this specific skill reaching 12/12
+                    flashSkillId = skillId;
+                    setTimeout(() => { flashSkillId = null; }, 1500);
+                }
+            } else {
+                // Clear flash state when removing points
+                if (flashSkillId === skillId) {
+                    flashSkillId = null;
+                }
+                if (skill.rank === 12) {
+                    skill.rank = 11;
+                    playSound('sub');
+                } else if (skill.rank > 0) {
+                    skill.rank--;
+                    playSound('sub');
+                }
+            }
+            render();
+        }
+
+        function render() {
+            const container = document.getElementById('skillsContainer');
+            container.innerHTML = '';
+            const spent = getPointsSpent();
+            document.getElementById('pointsRemaining').textContent = `${MAX_POINTS - spent} / ${MAX_POINTS}`;
+
+            const label = document.querySelector('.points-label-small');
+            if (spent >= MAX_POINTS) {
+                label.classList.add('maniacal-glow');
+            } else {
+                label.classList.remove('maniacal-glow');
+            }
+
+            classes[activeClassIndex].skills.forEach(skill => {
+                const isMax = skill.rank === 12;
+                const isFlashing = skill.id === flashSkillId;
+                const isActive = skill.rank > 0;
+                const canAdd = (skill.rank < 11 && (MAX_POINTS - spent) >= 1) || (skill.rank === 11 && (MAX_POINTS - spent) >= 4);
+                const card = document.createElement('div');
+                card.className = `skill-card ${isMax ? 'max-flash-static' : ''} ${isFlashing ? 'max-flash' : ''}`;
+                card.setAttribute('data-skill-id', skill.id);
+                card.innerHTML = `
+                    <div class="skill-header">
+                        <div class="skill-name">
+                            ${skill.name}
+                            <div class="skill-flavor-top">${skill.flavor || ''}</div>
+                        </div>
+                        <div class="rank-badge ${isMax ? 'max' : (isActive ? 'active' : '')}">RANK ${skill.rank} / 12</div>
+                    </div>
+                    <div class="rank-controls">
+                        <button class="control-btn" onclick="updateRank('${skill.id}', -1)" ${skill.rank === 0 ? 'disabled' : ''}>-</button>
+                        <button class="control-btn" onclick="updateRank('${skill.id}', 1)" ${!canAdd ? 'disabled' : ''}>+</button>
+                        <div class="skill-metadata-right">
+                            <div class="skill-type-tag">${skill.type}</div>
+                            <div class="skill-cost-tag">${skill.cost || ''}</div>
+                        </div>
+                    </div>
+                    <div class="skill-desc">${skill.getDesc(Math.min(skill.rank, 11))}</div>
+                    <div class="capstone-box ${isMax ? 'unlocked' : ''}">
+                        <div class="capstone-title">${skill.capName}</div>
+                        <div class="capstone-info">${skill.capDesc}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderUtilities() {
+            const container = document.getElementById('utilityContainer');
+            container.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const box = document.createElement('div');
+                box.className = 'utility-box';
+                let options = '<option value="-1">Empty Focus</option>';
+                skillData.forEach((s, idx) => {
+                    options += `<option value="${idx}" ${selectedSkills[i] == idx ? 'selected' : ''}>${s.name}</option>`;
+                });
+                const info = selectedSkills[i] != null && selectedSkills[i] != -1 ? skillData[selectedSkills[i]] : null;
+                const isLeg = legendaryStates[i];
+                box.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:0.7rem; font-weight:900; color:var(--accent-blood);">SLOT ${i+1}</span>
+                        <label style="font-size:0.7rem; color:var(--royal-gold); cursor:pointer;">
+                            <input type="checkbox" ${isLeg ? 'checked' : ''} onchange="toggleLeg(${i})" ${info ? '' : 'disabled'}> LEG 120.0
+                        </label>
+                    </div>
+                    <select class="util-select-v2" onchange="setUtil(${i}, this.value)">${options}</select>
+                    <div style="font-size:0.85rem; margin-top:10px; color:rgba(255,255,255,0.7);">
+                        ${info ? `<div><strong>100.0:</strong> ${info.gm}</div>${isLeg ? `<div class="effect-leg"><strong>120.0 Bonus:</strong> ${info.leg}</div>` : ''}` : 'Select focus skill.'}
+                    </div>
+                `;
+                container.appendChild(box);
+            }
+        }
+
+        function setUtil(slot, val) { selectedSkills[slot] = val == -1 ? null : val; renderUtilities(); }
+        function toggleLeg(slot) { legendaryStates[slot] = !legendaryStates[slot]; renderUtilities(); }
+        function resetPoints() { 
+            classes[activeClassIndex].skills.forEach(s => s.rank = 0); 
+            playSound('reset');
+            render(); 
+        }
+        function resetEverything() { 
+            classes.forEach(c => c.skills.forEach(s => s.rank = 0)); 
+            selectedSkills = [null,null,null,null,null]; 
+            legendaryStates = [false,false,false,false,false]; 
+            playSound('reset');
+            render(); 
+            renderUtilities(); 
+        }
+
+        let isMuted = false;
+        function toggleMute() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('muteBtn');
+            isMuted = !isMuted;
+            music.muted = isMuted;
+            btn.textContent = isMuted ? '🔇' : '🔊';
+        }
+
+        window.onload = () => {
+            init();
+            
+            // Background Music Setup
+            const music = document.getElementById('bgMusic');
+            music.volume = 0.3;
+            
+            // Interaction to start music (browser policy)
+            const startMusic = () => {
+                music.play().catch(() => {});
+                document.removeEventListener('click', startMusic);
+            };
+            document.addEventListener('click', startMusic);
+        };
+    </script>
+</body>
+
+>>>>>>> 4dded38ae1c05e5ca5da7e99d7ae0fcd287da7ac
 </html>
