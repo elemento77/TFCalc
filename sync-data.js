@@ -5,7 +5,7 @@ const path = require('path');
 const SERVER_DOCS_PATH = 'C:\\Users\\menti\\Desktop\\Projetos\\Server\\docs\\ClassSystem';
 const TFCALC_PATH = 'C:\\Users\\menti\\Desktop\\TFCalc';
 
-const GDD_FILE = path.join(SERVER_DOCS_PATH, 'GDD_ClassSystem_PvM.md');
+const GDD_FILE = path.join(SERVER_DOCS_PATH, 'ClassInfo.md');
 const SPECS_FILE = path.join(SERVER_DOCS_PATH, 'SkillSpecializations_PvM.md');
 const INDEX_FILE = path.join(TFCALC_PATH, 'index.html');
 

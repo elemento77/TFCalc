@@ -5,7 +5,7 @@ import os
 SERVER_DOCS_PATH = r'C:\Users\menti\Desktop\Projetos\Server\docs\ClassSystem'
 TFCALC_PATH = r'C:\Users\menti\Desktop\TFCalc'
 
-GDD_FILE = os.path.join(SERVER_DOCS_PATH, 'GDD_ClassSystem_PvM.md')
+GDD_FILE = os.path.join(SERVER_DOCS_PATH, 'ClassInfo.md')
 SPECS_FILE = os.path.join(SERVER_DOCS_PATH, 'SkillSpecializations_PvM.md')
 INDEX_FILE = os.path.join(TFCALC_PATH, 'index.html')
 
